@@ -1,0 +1,34 @@
+/** 定义基本颜色 **/
+@theme-color-rec: #fdae09;
+@font-color-default: #2c3e50;
+
+/** define layout variables **/
+@menu-width: 266px;
+
+/** 第三方css库 **/
+
+/** 基础样式 **/
+* { box-sizing: border-box; }
+html { height: 100%; }
+body {
+  position: relative;
+  min-height: 100%;
+  background-color: #e2e2e2;
+}
+dl, menu, ol, ul { margin:0; padding:0; }
+ul, ol { list-style: none }
+button { background-color: transparent; border-style: none; cursor: pointer }
+input, textarea { 
+  background-color: transparent; 
+  border: none;
+  outline: none; /*-webkit-appearance:none;*/ 
+}
+input:focus {
+  outline: none !important;
+}
+textarea { resize: none; }
+.clear { clear: both }
+.content-view {
+  width: 784px;
+  margin: 0 auto;
+}

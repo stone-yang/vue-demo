@@ -1,7 +1,17 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+const APP_PORT = process.env.APP_PORT || 3000;                        // app listen port
+const APP_DEV_PORT = process.env.APP_DEV_PORT || 8080;                // app listen port development
+const MONGO_HOST = process.env.MONGO_HOST || '127.0.0.1';             // mongo address
+
 module.exports = {
+  app: {
+    port: APP_PORT,
+  },
+  mongo: {
+    url: `mongodb://${MONGO_HOST}:27017/noteskeep`,
+  },
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
@@ -23,7 +33,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: APP_DEV_PORT,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

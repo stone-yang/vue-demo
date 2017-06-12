@@ -4,14 +4,13 @@
     <note-create-pane
       @input="changeFormValues"
       @create="confirmCreate"
-      :values="{ title, content }"
-      :folded="folded" />
+      :values="{ title, content }" />
     <note-list-pane v-for="note in notes" 
       :note="note"
       @edit="showEditForm" />
 
     <!-- note edit dialog -->
-    <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog"
+    <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog()"
       :actions="settings.dialog.actions">
       <div class="note-wrapper">
         <input type="text" placeholder="Title" class="note-title" v-model="title" />

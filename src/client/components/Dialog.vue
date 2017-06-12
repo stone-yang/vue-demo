@@ -2,8 +2,8 @@
   <div class="dialog-wrapper" :class="{ hide: !show }">
     <dialog open=true class="dialog-win" ref="dialog" @click.stop>
       <div class="dialog-win-inner">
+        <!-- dialog content -->
         <slot></slot>
-        <!--<button type="button" class="pane-op-button">DONE</button>-->
       </div>
       <div class="dialog-buttons">
         <button type="button" v-for="(action, idx) in actions" 
@@ -21,7 +21,6 @@ export default {
     show: Boolean,
     actions: Array,
   },
-  // components: { NoteToolbar },
   created() {
     document.querySelector('body').addEventListener('click', this.hide);
     // this.setPosition();
@@ -36,9 +35,6 @@ export default {
     hide() {
       this.$emit('hide');
     },
-    // ...mapMutations({
-    //   closeDialog: 'components/closeDialog',
-    // }),
     setPosition() {
       const diaEle = this.$refs.dialog;
       const winWidth = diaEle.offsetWidth;

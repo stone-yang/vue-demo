@@ -51,6 +51,8 @@ export default {
 
 <style lang='less' scoped>
 .wrapper {
+  position: fixed;
+  z-index: 1000;
   background-color: #fb0;
   width: 100%;
   height: 64px;

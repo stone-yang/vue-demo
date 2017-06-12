@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      folded: true,
+      folded: this.paneFolded,
     };
   },
   methods: {

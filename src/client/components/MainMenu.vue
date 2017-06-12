@@ -36,8 +36,9 @@ export default {
 <style lang='less' scoped>
 @import '../styles/main.less';
 menu {
-  position: absolute;
+  position: fixed;
   float: left;
+  margin-top: 64px;
   width: 266px;
 }
 .menu-section {

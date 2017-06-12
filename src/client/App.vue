@@ -33,5 +33,6 @@ export default {
 .main-container {
   margin-left: @menu-width;
   padding: 24px 48px;
+  padding-top: 64px;
 }
 </style>

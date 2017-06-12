@@ -1,4 +1,4 @@
-/** 定义基本颜色 **/
+/** define color variables **/
 @theme-color-rec: #fdae09;
 @font-color-default: #2c3e50;
 
@@ -7,7 +7,7 @@
 
 /** 第三方css库 **/
 
-/** 基础样式 **/
+/** base **/
 * { box-sizing: border-box; }
 html { height: 100%; }
 body {
@@ -31,4 +31,32 @@ textarea { resize: none; }
 .content-view {
   width: 784px;
   margin: 0 auto;
+}
+.hide { display: none }
+
+/** dialog **/
+.dialog-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+}
+.dialog-shade {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5e5;
+  opacity: .75;
+}
+
+.dialog-win {
+  position: absolute;
+  z-index: 1005;
+  top: 0;
+  left: 0;
+  border-style: none;
+  border-radius: 2px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 
+    0 1px 5px 0 rgba(0,0,0,0.12);
 }

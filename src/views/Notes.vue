@@ -1,22 +1,31 @@
 <template>
   <div class="content-view">
     <note-create-pane />
-    <note-list-pane />
+    <note-list-pane v-for="note in notes" :note="note" />
+
+    <!-- note edit dialog -->
+    <app-dialog>
+      <input type="text" placeholder="Title" class="note-title" />
+      <textarea ref="noteContent" placeholder="Take a note..."
+        class="note-content"></textarea>
+      <note-toolbar :opType="1" />
+    </app-dialog>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NoteCreatePane from '@/components/NoteCreatePane';
 import NoteListPane from '@/components/NoteListPane';
+import NoteToolbar from '@/components/NoteToolbar';
+import AppDialog from '@/components/Dialog';
 
 export default {
   name: 'Notes',
-  components: { NoteCreatePane, NoteListPane },
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-    };
-  },
+  components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
+  computed: mapGetters({
+    notes: 'notes/allNotes',
+  }),
 };
 </script>
 

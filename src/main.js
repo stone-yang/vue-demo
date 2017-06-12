@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import store from './store';
 
 // require('./styles/main.less');
 
@@ -14,5 +15,6 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  store,
   components: { App },
 });

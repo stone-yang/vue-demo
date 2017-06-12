@@ -10,7 +10,8 @@
       <li class="icon-btn">
         <i class="mdi mdi-label"></i>
       </li>
-      <li class="icon-btn" v-if="opType === 1">
+      <li class="icon-btn" v-if="opType === 1"
+        @click="remove({ id: noteId })">
         <i class="mdi mdi-close"></i>
       </li>
     </ul>
@@ -19,6 +20,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'NoteToolbar',
   props: {
@@ -27,6 +30,15 @@ export default {
       type: Number,
       default: 1,
     },
+    note: Object,
+  },
+  data() {
+    return { noteId: this.note && this.note.id };
+  },
+  methods: {
+    ...mapActions({
+      remove: 'notes/remove',
+    }),
   },
 };
 </script>

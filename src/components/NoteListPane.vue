@@ -4,14 +4,14 @@
     <div class="pane">
       <div class="pane-inner">
         <!-- note title -->
-        <div class="note-title">Title</div>
-        <div class="note-content">Take a note...</div>
+        <div class="note-title">{{ note.title }}</div>
+        <div class="note-content">{{ note.content }}</div>
         <!-- note toolbar -->
         <!--<button type="button" class="pane-op-button">DONE</button>-->
       </div>
       <div :style="{ height: '24px' }">
         <div v-show="hover">
-          <note-toolbar :opType="1" />
+          <note-toolbar :opType="1" :note="note" />
         </div>
       </div>
     </div>
@@ -25,21 +25,11 @@ import NoteToolbar from '@/components/NoteToolbar';
 export default {
   name: 'NoteListPane',
   components: { NoteToolbar },
-  created() {
-    document.querySelector('body').addEventListener('click', this.foldPane);
-  },
-  beforeDestroy() {
-    document.querySelector('body').removeEventListener('click', this.foldPane);
-  },
+  props: ['note'],
   data() {
     return {
       hover: false,
     };
-  },
-  methods: {
-    foldPane() {
-      this.folded = true;
-    },
   },
   watch: {
     folded(val) {

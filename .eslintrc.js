@@ -39,5 +39,10 @@ module.exports = {
     'func-names': 0,
     // allow console statement
     'no-console': 0,
+    // allow shadow declaration of variables
+    'no-shadow': 0,
+    // allow param reassign
+    'no-param-reassign': 0,
+    'prefer-default-export': 0,
   }
 }

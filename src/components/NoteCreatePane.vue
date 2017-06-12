@@ -5,13 +5,17 @@
         @focus="folded = false" v-show="folded" />
       <div class="pane-inner" v-show="!folded">
         <!-- note title -->
-        <input type="text" placeholder="Title" class="note-title" />
+        <input type="text" placeholder="Title" class="note-title"
+          :value="values.title"
+          @input="$emit('input', 'title', $event.target.value)" />
         <!-- note content -->
         <textarea ref="noteContent" placeholder="Take a note..."
+          :value="values.content"
+          @input="$emit('input', 'content', $event.target.value)"
           class="note-content"></textarea>
         <!-- note toolbar -->
         <note-toolbar :opType="0" />
-        <button type="button" class="pane-op-button">DONE</button>
+        <button type="button" class="pane-op-button" @click="$emit('create')">DONE</button>
       </div>
     </div>
     <div class="icon-btn image" v-show="folded">
@@ -29,6 +33,7 @@ import NoteToolbar from '@/components/NoteToolbar';
 
 export default {
   name: 'NoteCreatePane',
+  props: ['values'],
   components: { NoteToolbar },
   created() {
     document.querySelector('body').addEventListener('click', this.foldPane);

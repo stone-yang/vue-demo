@@ -5,7 +5,10 @@
         <slot></slot>
         <!--<button type="button" class="pane-op-button">DONE</button>-->
       </div>
-      <div class="dialog-buttons"></div>
+      <div class="dialog-buttons">
+        <button type="button" v-for="(action, idx) in actions" 
+          :key="idx" @click="action.handler">{{action.name}}</button>
+      </div>
     </dialog>
     <div class="dialog-shade"></div>
   </div>
@@ -14,15 +17,17 @@
 <script>
 export default {
   name: 'Dialog',
-  props: ['show'],
+  props: {
+    show: Boolean,
+    actions: Array,
+  },
   // components: { NoteToolbar },
   created() {
     document.querySelector('body').addEventListener('click', this.hide);
     // this.setPosition();
   },
   updated() {
-    console.log('update');
-    this.setPosition();
+    this.show && this.setPosition();
   },
   beforeDestroy() {
     document.querySelector('body').removeEventListener('click', this.hide);

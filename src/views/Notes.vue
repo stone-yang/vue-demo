@@ -1,16 +1,22 @@
 <template>
   <div class="content-view">
-    <note-create-pane />
+    {{title}}{{content}}
+    <note-create-pane
+      @input="changeFormValues"
+      @create="confirmCreate"
+      :values="{ title, content }"
+      :folded="folded" />
     <note-list-pane v-for="note in notes" 
       :note="note"
-      @edit="openDialog({ name: 'editNote' })" />
+      @edit="showEditForm" />
 
     <!-- note edit dialog -->
-    <app-dialog :show="dialog.editNote || false" @hide="closeDialog">
+    <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog"
+      :actions="settings.dialog.actions">
       <div class="note-wrapper">
-        <input type="text" placeholder="Title" class="note-title" />
+        <input type="text" placeholder="Title" class="note-title" v-model="title" />
         <textarea ref="noteContent" placeholder="Take a note..."
-          class="note-content"></textarea>
+          class="note-content" v-model="content"></textarea>
       </div>
       <note-toolbar :opType="1" />
     </app-dialog>
@@ -18,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import NoteCreatePane from '@/components/NoteCreatePane';
 import NoteListPane from '@/components/NoteListPane';
 import NoteToolbar from '@/components/NoteToolbar';
@@ -27,15 +33,60 @@ import AppDialog from '@/components/Dialog';
 export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
-  computed: mapGetters({
-    dialog: 'components/dialog',
-    notes: 'notes/allNotes',
-  }),
+  data() {
+    return {
+      id: '',
+      title: '',
+      content: '',
+      // initially fold the note-create-pane
+      folded: true,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      dialog: 'components/dialog',
+      notes: 'notes/allNotes',
+    }),
+    settings() {
+      return {
+        dialog: {
+          actions: [{
+            name: 'DONE',
+            handler: this.confirmEdit,
+          }],
+        },
+      };
+    },
+  },
   methods: {
     ...mapMutations({
       openDialog: 'components/openDialog',
       closeDialog: 'components/closeDialog',
     }),
+    ...mapActions({
+      createNote: 'notes/create',
+      editNote: 'notes/edit',
+      removeNote: 'notes/remove',
+    }),
+    changeFormValues(key, value) {
+      this[key] = value;
+    },
+    showEditForm(note) {
+      this.id = note.id;
+      this.title = note.title;
+      this.content = note.content;
+      this.openDialog({ name: 'editNote' });
+    },
+    confirmCreate() {
+      this.createNote({ title: this.title, content: this.content });
+      this.content = '';
+      this.title = '';
+      this.folded = true;
+    },
+    confirmEdit() {
+      this.editNote({ id: this.id, title: this.title, content: this.content });
+      this.closeDialog();
+    },
   },
 };
 </script>

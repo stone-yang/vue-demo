@@ -1,7 +1,7 @@
 <template>
   <div class="note-wrapper" 
     @mouseenter="hover = true" @mouseleave="hover = false"
-    @click.stop="$emit('edit')">
+    @click.stop="$emit('edit', note)">
     <div class="pane">
       <div class="pane-inner">
         <!-- note title -->

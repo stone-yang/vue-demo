@@ -1,6 +1,7 @@
 <template>
   <div class="note-wrapper" 
-    @mouseenter="hover = true" @mouseleave="hover = false">
+    @mouseenter="hover = true" @mouseleave="hover = false"
+    @click.stop="$emit('edit')">
     <div class="pane">
       <div class="pane-inner">
         <!-- note title -->
@@ -9,7 +10,7 @@
         <!-- note toolbar -->
         <!--<button type="button" class="pane-op-button">DONE</button>-->
       </div>
-      <div :style="{ height: '24px' }">
+      <div :style="{ height: '24px' }" @click.stop>
         <div v-show="hover">
           <note-toolbar :opType="1" :note="note" />
         </div>
@@ -30,16 +31,6 @@ export default {
     return {
       hover: false,
     };
-  },
-  watch: {
-    folded(val) {
-      // auto focus note content textarea when initially unfold the pane
-      if (!val) {
-        this.$nextTick(() => {
-          this.$refs.noteContent.focus();
-        });
-      }
-    },
   },
 };
 </script>

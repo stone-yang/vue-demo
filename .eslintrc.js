@@ -44,5 +44,8 @@ module.exports = {
     // allow param reassign
     'no-param-reassign': 0,
     'prefer-default-export': 0,
+    // allow unused variables
+    'no-unused-vars': 0,
+    'no-unused-expressions': 0,
   }
 }

@@ -1,20 +1,24 @@
 <template>
   <div class="content-view">
     <note-create-pane />
-    <note-list-pane v-for="note in notes" :note="note" />
+    <note-list-pane v-for="note in notes" 
+      :note="note"
+      @edit="openDialog({ name: 'editNote' })" />
 
     <!-- note edit dialog -->
-    <app-dialog>
-      <input type="text" placeholder="Title" class="note-title" />
-      <textarea ref="noteContent" placeholder="Take a note..."
-        class="note-content"></textarea>
+    <app-dialog :show="dialog.editNote || false" @hide="closeDialog">
+      <div class="note-wrapper">
+        <input type="text" placeholder="Title" class="note-title" />
+        <textarea ref="noteContent" placeholder="Take a note..."
+          class="note-content"></textarea>
+      </div>
       <note-toolbar :opType="1" />
     </app-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import NoteCreatePane from '@/components/NoteCreatePane';
 import NoteListPane from '@/components/NoteListPane';
 import NoteToolbar from '@/components/NoteToolbar';
@@ -24,28 +28,32 @@ export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
   computed: mapGetters({
+    dialog: 'components/dialog',
     notes: 'notes/allNotes',
   }),
+  methods: {
+    ...mapMutations({
+      openDialog: 'components/openDialog',
+      closeDialog: 'components/closeDialog',
+    }),
+  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+<style lang='less' scoped>
+.note-wrapper {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  min-width: 600px;
+  border-radius: 2px;
 }
-
-ul {
-  list-style-type: none;
-  padding: 0;
+.note-content {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+.note-title {
+  font-weight: bold;
 }
 </style>

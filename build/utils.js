@@ -1,4 +1,5 @@
 var path = require('path')
+var fs = require('fs')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
@@ -69,3 +70,27 @@ exports.styleLoaders = function (options) {
   }
   return output
 }
+
+// remove a directory
+exports.clearDir = (function () {
+  function emptyDir (fileUrl) {
+    var files = fs.readdirSync(fileUrl);
+    files.forEach(function(file){
+        var path = fileUrl + '/' + file
+        var stats = fs.statSync(path)
+        if (stats.isDirectory()) {
+            emptyDir(path);
+            fs.rmdirSync(path)
+        } else {
+            fs.unlinkSync(path);
+        }
+    });
+  }
+  return function (url) {
+    if (!fs.existsSync(url)) {
+      return;
+    }
+    emptyDir(url)
+    fs.rmdirSync(url)
+  }
+})()

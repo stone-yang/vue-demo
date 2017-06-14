@@ -47,5 +47,7 @@ module.exports = {
     // allow unused variables
     'no-unused-vars': 0,
     'no-unused-expressions': 0,
+    // allow require
+    'global-require': 0,
   }
 }

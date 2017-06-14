@@ -3,20 +3,27 @@ import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
 // import * as actions from './actions';
 // import * as getters from './getters';
-import components from './modules/components';
-import notes from './modules/notes';
+import modules from './modules';
+
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   // actions,
   // getters,
-  modules: {
-    components,
-    notes,
-  },
+  modules,
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
+
+export default store;
+
+// if (module.hot) {
+//   module.hot.accept(
+//     Object.keys(modules).map(m => `./modules/${m}`),
+//     () => {
+//       store.hotUpdate(modules);
+//     });
+// }

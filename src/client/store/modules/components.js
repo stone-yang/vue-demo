@@ -15,9 +15,24 @@ const dialog = {
   },
 };
 
+const mainMenu = {
+  state: {
+    show: true,
+  },
+  getters: { mainMenu: state => state },
+  mutations: {
+    toggleMainMenu(state, { show }) {
+      // const newState = Object.assign({}, state, { show });
+      // console.log(newState, 1111);
+      state.show = show;
+    },
+  },
+};
+
 export default {
   namespaced: true,
   modules: {
     dialog,
+    mainMenu,
   },
 };

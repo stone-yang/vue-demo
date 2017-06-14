@@ -2,7 +2,7 @@
   <div class="note-wrapper" :class="{ folded }" @click.stop>
     <div class="pane">
       <input type="text" placeholder="Take a note..." class="note-input"
-        @focus="folded = false" v-show="folded" />
+        @focus="$emit('fold', false)" v-show="folded" />
       <div class="pane-inner" v-show="!folded">
         <!-- note title -->
         <input type="text" placeholder="Title" class="note-title"
@@ -33,7 +33,7 @@ import NoteToolbar from '@/components/NoteToolbar';
 
 export default {
   name: 'NoteCreatePane',
-  props: ['values'],
+  props: ['values', 'folded'],
   components: { NoteToolbar },
   created() {
     document.querySelector('body').addEventListener('click', this.foldPane);
@@ -41,14 +41,9 @@ export default {
   beforeDestroy() {
     document.querySelector('body').removeEventListener('click', this.foldPane);
   },
-  data() {
-    return {
-      folded: this.paneFolded,
-    };
-  },
   methods: {
     foldPane() {
-      this.folded = true;
+      this.$emit('fold', true);
     },
   },
   watch: {
@@ -78,7 +73,7 @@ export default {
     height: 48px;
   }
   .pane { 
-    width: 70%;
+    width: 75%;
     padding: 15px;
     float: left; 
     .pane-op-button {
@@ -96,6 +91,7 @@ export default {
 }
 .note-content {
   width: 100%;
+  min-height: 60px;
   margin-top: 20px;
   font-size: 14px;
 }

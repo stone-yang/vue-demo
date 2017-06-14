@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="icon-btn menu-icon">
+    <div class="icon-btn menu-icon" @click="$emit('toggleMenu')">
       <i class="mdi mdi-menu"></i>
     </div>
     <div class="top-title">

@@ -1,12 +1,13 @@
 <template>
   <div class="content-view">
-    {{title}}{{content}}
     <note-create-pane
+      :values="{ title, content }"
+      :folded="folded"
       @input="changeFormValues"
       @create="confirmCreate"
-      :values="{ title, content }" />
-    <note-list-pane v-for="note in notes" 
-      :note="note"
+      @fold="foldCreatePane" />
+    <note-list-pane v-for="(note, idx) in notes" 
+      :note="note" :key="idx"
       @edit="showEditForm" />
 
     <!-- note edit dialog -->
@@ -86,6 +87,13 @@ export default {
       this.editNote({ id: this.id, title: this.title, content: this.content });
       this.closeDialog();
     },
+    foldCreatePane(isFold) {
+      this.folded = isFold;
+      if (!isFold) {
+        this.content = '';
+        this.title = '';
+      }
+    },
   },
 };
 </script>
@@ -101,6 +109,7 @@ export default {
 .note-content {
   width: 100%;
   margin-top: 20px;
+  min-height: 60px;
   font-size: 14px;
 }
 .note-title {

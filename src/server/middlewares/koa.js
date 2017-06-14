@@ -1,9 +1,10 @@
 import koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-// import logger from 'koa-logger';
+import logger from 'koa-logger';
 import path from 'path';
-// import serve from 'koa-static-cache';
-import views from 'co-view';
+import serve from 'koa-static-cache';
+import views from 'koa-views';
+import convert from 'koa-convert';
 
 import config from '../../../config';
 
@@ -11,39 +12,51 @@ const STATIC_FILES_MAP = {};
 const SERVE_OPTIONS = { prefix: '/assets/', maxAge: 365 * 24 * 60 * 60 };
 
 export default function (app) {
-  // if (config.app.env !== 'test') {
-  //   app.use(logger());
-  // }
   /**
-   * 全局错误处理
+   * logger
    */
-  app.use(function* errorHandler(next) {
+  if (config.app.env !== 'test') {
+    app.use(logger());
+  }
+  /**
+   * global error handler
+   */
+  app.use(async (ctx, next) => {
     try {
-      yield next;
+      await next();
 
-      if (!this.status) {
-        this.status = 200;
+      if (!ctx.status) {
+        ctx.status = 200;
       }
     } catch (e) {
-      this.status = 500;
-      console.log('\n========================== 系统错误 ==========================\n');
+      ctx.status = 500;
+      console.log('\n========================== System Error ==========================\n');
       console.log(e.stack);
-      this.body = { error: e.message };
+      ctx.body = { error: e.message };
     }
   });
 
-  // if (config.app.env === 'production') {
-  //   app.use(serve(path.resolve(config.app.outputPath, 'client'), SERVE_OPTIONS, STATIC_FILES_MAP));
-  // }
+  /**
+   * Counting time
+   */
+  // app.use(async (ctx, next) => {
+  //   const start = Date.now();
+  //   await next();
+  //   console.log(`[${ctx.request.method}][${ctx.request.url}] ${Date.now() - start} ms.`);
+  // });
 
+  /**
+   * Serve pure static assets
+   * Config templates rendering
+   */
   if (config.app.env === 'production') {
-    app.use(function* templateRender(next) {
-      const indexPath = config.build.index;
-      this.render = views(indexPath, {
-        map: { html: 'swig' },
-        cache: config.app.env === 'development' ? 'memory' : false,
-      });
-      yield next;
-    });
+    const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+    app.use(convert(serve(path.resolve(process.cwd(), 'dist', 'static'), { prefix: staticPath }, {})));
+    app.use(views(path.resolve(process.cwd(), 'dist')));
   }
+
+  /**
+   * Body parser
+   */
+  app.use(bodyParser());
 }

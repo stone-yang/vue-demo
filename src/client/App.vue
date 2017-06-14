@@ -2,21 +2,37 @@
 <style src="mdi/css/materialdesignicons.min.css"></style>
 <template>
   <div id="app">
-    <topbar />
-    <main-menu />
-    <div class="main-container">
+    <topbar @toggleMenu="toggleMenu({ show: !mainMenu.show })" />
+    <main-menu :show="mainMenu.show" />
+    <div class="main-container" :class="{ 'left-menu': mainMenu.show }">
       <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Topbar from '@/components/Topbar';
 import MainMenu from '@/components/MainMenu';
 
 export default {
   name: 'app',
   components: { Topbar, MainMenu },
+  computed: {
+    ...mapGetters({
+      mainMenu: 'components/mainMenu',
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      toggleMenu: 'components/toggleMainMenu',
+    }),
+  },
+  watch: {
+    mainMenu() {
+      console.log(this.mainMenu);
+    },
+  },
 };
 </script>
 
@@ -31,8 +47,10 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 .main-container {
-  margin-left: @menu-width;
   padding: 24px 48px;
   padding-top: 64px;
+  &.left-menu {
+    margin-left: @menu-width;
+  }
 }
 </style>

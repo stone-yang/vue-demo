@@ -1,5 +1,5 @@
 <template>
-  <menu>
+  <menu :class="{ hide: !show }">
     <ul class="menu-section">
       <li class="menu-item">
         <i class="mdi mdi-lightbulb"></i>
@@ -30,6 +30,7 @@
 <script>
 export default {
   name: 'MainMenu',
+  props: ['show'],
 };
 </script>
 

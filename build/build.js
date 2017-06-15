@@ -62,5 +62,6 @@ function runServerTask() {
 
 utils.clearDir(config.build.assetsRoot)
 runClientTask().then(res => runServerTask())
+// runServerTask()
 
 

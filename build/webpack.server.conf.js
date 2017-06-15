@@ -19,11 +19,12 @@ fs.readdirSync(config.build.nodeModulesPath)
       nodeModules[mod] = 'commonjs ' + mod;
   });
 
-module.exports = {
+const webpackConfig = {
   entry: {
     server: 
       config.app.env === 'production' ?
-      config.build.serverPath :
+      ['babel-polyfill',
+      config.build.serverPath] :
       ['webpack/hot/poll?1000',
         'babel-polyfill',
         config.dev.serverPath],
@@ -58,5 +59,23 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new FriendlyErrorsPlugin()
-  ]
+  ],
+  node: {
+		__filename: true,
+		__dirname: true,
+	},
+  devtool: config.app.debug ? '#inline-source-map' : '#source-map',
 }
+
+// if (config.app.env === 'production') {
+//   webpackConfig.plugins.push(
+//     new webpack.optimize.UglifyJsPlugin({
+//       compress: {
+//         warnings: false
+//       },
+//       sourceMap: true
+//     })
+//   );
+// }
+
+module.exports = webpackConfig;

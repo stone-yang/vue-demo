@@ -2,8 +2,6 @@ import opn from 'opn';
 import path from 'path';
 import webpack from 'webpack';
 import koaWebpackMiddleware from 'koa-webpack-middleware';
-import serve from 'koa-static-cache';
-import convert from 'koa-convert';
 import config from '../../../config';
 
 // require('./check-versions')()
@@ -68,10 +66,6 @@ export default function (app) {
   // enable hot-reload and state-preserving
   // compilation error display
   app.use(hotMiddleware);
-
-  // serve pure static assets
-  const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
-  app.use(convert(serve('./static', { prefix: staticPath }, {})));
 
   const uri = `http://localhost:${port}`;
 

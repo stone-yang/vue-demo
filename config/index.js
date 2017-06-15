@@ -12,6 +12,7 @@ module.exports = {
   app: {
     port: APP_PORT,
     env: NODE_ENV,
+    debug: false,
   },
   mongo: {
     url: `mongodb://${MONGO_HOST}:27017/noteskeep`,
@@ -23,7 +24,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     serverPath: path.resolve(__dirname, '../src/server', 'server.js'),
-    nodeModulesPath: path.resolve(process.cwd(), 'node_modules'),     // npm 安装依赖包文件夹路径
+    // nodeModulesPath: path.resolve(process.cwd(), 'node_modules'),     // npm 安装依赖包文件夹路径
+    nodeModulesPath: path.resolve(__dirname, '..', 'node_modules'),
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

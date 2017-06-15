@@ -34,14 +34,20 @@ const webpackConfig = {
     filename: '[name].js',
     publicPath: config.app.env === 'production'
       ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      : config.dev.assetsPublicPath,
+    // The filename of non-entry chunks
+    chunkFilename: config.app.debug ? '[name].chunk.js' : '[chunkhash:8].[name].chunk.min.js',
+    // The filename of the SourceMaps for the JavaScript files.
+    sourceMapFilename: "debugging/[file].map",
   },
   externals: nodeModules,
   target: 'node',
   resolve: {
     extensions: ['.js', '.json'],
     alias: {
-      '@server': resolve('src', 'server'),
+      '@server': config.app.serverFilePath,
+      '@models': config.app.modelsPath,
+      '@global': config.app.globalPath,
     }
   },
   module: {

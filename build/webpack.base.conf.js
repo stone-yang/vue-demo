@@ -23,8 +23,8 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      // '@': resolve('src', 'client'),
-      '@': path.join(process.cwd(), 'src', 'client'),
+      '@': config.app.clientFilePath,
+      '@global': config.app.globalPath,
     }
   },
   module: {

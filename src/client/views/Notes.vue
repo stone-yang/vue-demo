@@ -8,7 +8,8 @@
       @fold="foldCreatePane" />
     <note-list-pane v-for="(note, idx) in notes" 
       :note="note" :key="idx"
-      @edit="showEditForm" />
+      @edit="showEditForm"
+      @remove="removeNote({ id: note._id })" />
 
     <!-- note edit dialog -->
     <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog()"
@@ -33,6 +34,9 @@ import AppDialog from '@/components/Dialog';
 export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
+  mounted() {
+    this.queryNote();
+  },
   data() {
     return {
       id: '',
@@ -64,6 +68,7 @@ export default {
       closeDialog: 'components/closeDialog',
     }),
     ...mapActions({
+      queryNote: 'notes/query',
       createNote: 'notes/create',
       editNote: 'notes/edit',
       removeNote: 'notes/remove',

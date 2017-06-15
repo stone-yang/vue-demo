@@ -11,7 +11,7 @@
         <i class="mdi mdi-label"></i>
       </li>
       <li class="icon-btn" v-if="opType === 1"
-        @click="remove({ id: noteId })">
+        @click="$emit('remove')">
         <i class="mdi mdi-close"></i>
       </li>
     </ul>

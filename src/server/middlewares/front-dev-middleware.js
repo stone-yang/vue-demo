@@ -2,7 +2,9 @@ import opn from 'opn';
 import path from 'path';
 import webpack from 'webpack';
 import koaWebpackMiddleware from 'koa-webpack-middleware';
-import config from '../../../config';
+import koaWebpackDevMiddleware from 'koa-webpack-dev-middleware';
+import convert from 'koa-convert';
+import config from '@global/config';
 
 // require('./check-versions')()
 
@@ -18,7 +20,7 @@ let bOpened = false;
 
 const compiler = webpack(webpackConfig);
 
-const expressDevMiddleware = require('webpack-dev-middleware')(compiler, {
+const devMiddleware = koaWebpackDevMiddleware(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true,
   stats: {
@@ -32,18 +34,6 @@ const expressDevMiddleware = require('webpack-dev-middleware')(compiler, {
     poll: true,
   },
 });
-
-const devMiddleware = async (ctx, next) => {
-  await expressDevMiddleware(ctx.req, {
-    end: (content) => {
-      ctx.body = content;
-    },
-    setHeader: (name, value) => {
-      ctx.set(name, value);
-    },
-  }, next);
-};
-devMiddleware.waitUntilValid = expressDevMiddleware.waitUntilValid;
 
 const hotMiddleware = koaWebpackMiddleware.hotMiddleware(compiler, {
   log: () => {},
@@ -61,7 +51,7 @@ export default function (app) {
   // app.use(require('connect-history-api-fallback')())
 
   // serve webpack bundle output
-  app.use(devMiddleware);
+  app.use(convert(devMiddleware));
 
   // enable hot-reload and state-preserving
   // compilation error display

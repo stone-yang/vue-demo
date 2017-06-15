@@ -1,36 +1,34 @@
 // import shop from '../../api/shop'
+import axios from '@/api';
 import * as MUTYPES from '../mutation-types';
 
-const initialNts = [
-  {
-    id: 1,
-    title: 'Note 01',
-    content: 'This is Note 01.',
-  }, {
-    id: 2,
-    title: 'Note 02',
-    content: 'This is Note 02.',
-  },
-];
 // initial state
 const state = {
-  // $list: [],
-  $list: initialNts,
+  $list: [],
+  // $list: initialNts,
 };
 
 // getters
 const getters = {
-  allNotes: state => state.$list,
+  allNotes: (state) => {
+    let list = [...state.$list];
+    list = list.sort((a, b) => {
+      return new Date(b.createTime).getTime() - new Date(a.createTime).getTime();
+    });
+    console.log(list);
+    return list;
+  },
 };
 
 // actions
 const actions = {
-  create({ commit }, note) {
-    // shop.getProducts(products => {
-    //   commit(MUTYPES.NOTES.REMOVE, { products });
-    // })
-    // console.log('create', note);
-    commit(MUTYPES.NOTES.UPDATE_ALL, note);
+  query: async ({ commit }) => {
+    const res = await axios.get('/api/note/query');
+    commit(MUTYPES.NOTES.UPDATE_ALL, { $list: res.data });
+  },
+  create: async ({ commit }, note) => {
+    const data = await axios.post('/api/note/create', note);
+    commit(MUTYPES.NOTES.UPDATE_ONE, data);
   },
   edit({ commit }, note) {
     // shop.getProducts(products => {
@@ -38,30 +36,30 @@ const actions = {
     // })
     commit(MUTYPES.NOTES.UPDATE_ONE, note);
   },
-  remove({ commit }, { id }) {
-    console.log('remove');
-    // shop.getProducts(products => {
-    //   commit(MUTYPES.NOTES.REMOVE, { products });
-    // })
+  remove: async ({ commit }, { id }) => {
+    await axios.delete(`/api/note/remove/${id}`);
     commit(MUTYPES.NOTES.REMOVE, { id });
   },
 };
 
 // mutations
 const mutations = {
-  [MUTYPES.NOTES.UPDATE_ALL](state, note) {
-    console.log('create');
-    state.$list.push(note);
+  [MUTYPES.NOTES.UPDATE_ALL](state, payload) {
+    state.$list = payload.$list;
   },
   [MUTYPES.NOTES.UPDATE_ONE](state, note) {
     const $list = state.$list;
-    const idx = $list.findIndex(p => p.id === note.id);
-    $list[idx] = note;
-    state = { $list };
+    if (note.id) {
+      const idx = $list.findIndex(p => p.id === note.id);
+      $list[idx] = note;
+      state = { $list };
+    } else {
+      state.$list.unshift(note);
+    }
   },
   [MUTYPES.NOTES.REMOVE](state, { id }) {
     const $list = state.$list;
-    const idx = $list.findIndex(p => p.id === id);
+    const idx = $list.findIndex(p => p._id === id);
     console.log(id, idx);
     state = { $list: $list.splice(idx, 1) };
   },

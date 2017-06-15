@@ -12,7 +12,11 @@ module.exports = {
   app: {
     port: APP_PORT,
     env: NODE_ENV,
-    debug: false,
+    debug: true,
+    modelsPath: path.resolve(__dirname, '../src/models'),
+    globalPath: path.resolve(__dirname, '..'),
+    clientFilePath: path.resolve(__dirname, '../src/client'),
+    serverFilePath: path.resolve(__dirname, '../src/server'),
   },
   mongo: {
     url: `mongodb://${MONGO_HOST}:27017/noteskeep`,

@@ -26,7 +26,6 @@ fs.readdirSync(globalConfig.app.modelsPath)
     // find mongo models
     const model = require(`@models/${file}`).default;
     const schema = getSchema(model);
-    console.log(file, model);
     const modelName = file.replace(/\.js/, '');
 
     mongoose.model(modelName, schema);

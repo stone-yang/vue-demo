@@ -1,6 +1,6 @@
 import http from 'http';
 
-import globalConfig from '../../config';
+import globalConfig from '@global/config';
 import app from './server';
 
 /**

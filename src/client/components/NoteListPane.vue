@@ -12,7 +12,7 @@
       </div>
       <div :style="{ height: '24px' }" @click.stop>
         <div v-show="hover">
-          <note-toolbar :opType="1" :note="note" />
+          <note-toolbar :opType="1" :note="note" @remove="$emit('remove')" />
         </div>
       </div>
     </div>

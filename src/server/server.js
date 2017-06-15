@@ -1,14 +1,15 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import 'babel-polyfill';
+import mongoose from 'mongoose';
 
 /**
  * Config import
  */
-import globalConfig from '../../config';
+import globalConfig from '@global/config';
 import koaConfig from './middlewares/koa';
-// import mongoConfig from './db/mongo';
-// import routeConfig from './middlewares/routes';
+import mongoConfig from './db/mongo';
+import routeConfig from './middlewares/routes';
 
 /**
  * Server
@@ -16,29 +17,19 @@ import koaConfig from './middlewares/koa';
 const app = new Koa();
 const router = Router();
 
+/**
+ * Client webpack-dev-server
+ */
 if (globalConfig.app.env === 'development') {
   const frontDevMiddlewareConfig = require('./middlewares/front-dev-middleware').default;
   frontDevMiddlewareConfig(app);
 }
 koaConfig(app);
 
-app
-  // routes
-  .use(router.routes())
-  // Allowed methods
-  .use(router.allowedMethods());
-
 /**
  * Routes
  */
-router.get('/', async (ctx, next) => {
-  return ctx.render('index');
-});
-router.get('/100', async (ctx, next) => {
-  ctx.body = { hello: 'world1000000' };
-});
-
-// routeConfig(app);
+routeConfig(app);
 
 /**
  * Start Server - for production

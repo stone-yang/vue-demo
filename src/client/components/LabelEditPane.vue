@@ -1,15 +1,16 @@
 <template>
   <div class="label-edit-pane">
     <div class="label-row">
-      <span class="icon-btn">
+      <span class="icon-btn" v-show="focusIdx !== -1"
+        @click="initCreate">
         <i class="mdi mdi-plus"></i>
       </span>
-      <!--<span class="icon-btn">
-        <i class="mdi mdi-delete"></i>
-      </span>-->
+      <span class="icon-btn" v-show="focusIdx === -1" @click="labelTitle = ''">
+        <i class="mdi mdi-close"></i>
+      </span>
       <input type="text" class="label-title-input" placeholder="Create new label"
-        v-model="labelTitle" />
-      <span class="icon-btn" @click="confirmCreate">
+        v-model="labelTitle" ref="labelTitle" @focus="focusIdx = -1" />
+      <span class="icon-btn" @click="confirmCreate" :style="focusIdx !== -1 && { visibility: 'hidden'}">
         <i class="mdi mdi-check"></i>
       </span>
     </div>
@@ -78,6 +79,11 @@ export default {
       editLabel: 'labels/edit',
       removeLabel: 'labels/remove',
     }),
+    initCreate() {
+      this.focusIdx = -1;
+      this.hoverIdx = -1;
+      this.$refs.labelTitle.focus();
+    },
     async confirmCreate() {
       await this.createLabel({ body: this.labelParams, params: this.queryParams });
       this.labelTitle = '';
@@ -97,8 +103,7 @@ export default {
     show() {
       if (this.show) {
         this.editTitles = this.labels.map(l => l.title);
-        this.focusIdx = -1;
-        this.hoverIdx = -1;
+        this.initCreate();
         this.labelTitle = '';
       }
     },

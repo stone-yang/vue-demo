@@ -9,7 +9,7 @@
     <note-list-pane v-for="(note, idx) in notes" 
       :note="note" :key="idx"
       @edit="showEditForm"
-      @remove="removeNote({ id: note._id })" />
+      @remove="removeNote({ id: note._id, params: queryParams })" />
 
     <!-- note edit dialog -->
     <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog()"
@@ -19,7 +19,7 @@
         <textarea ref="noteContent" placeholder="Take a note..."
           class="note-content" v-model="content"></textarea>
       </div>
-      <note-toolbar :opType="1" />
+      <note-toolbar :opType="1" @remove="confirmRemove" />
     </app-dialog>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
   mounted() {
-    this.queryNote();
+    this.queryNote(this.queryParams);
   },
   data() {
     return {
@@ -47,6 +47,16 @@ export default {
     };
   },
   computed: {
+    noteParams() {
+      return { title: this.title, content: this.content };
+    },
+    queryParams() {
+      return {
+        orders: {
+          createTime: -1,
+        },
+      };
+    },
     ...mapGetters({
       dialog: 'components/dialog',
       notes: 'notes/allNotes',
@@ -77,19 +87,23 @@ export default {
       this[key] = value;
     },
     showEditForm(note) {
-      this.id = note.id;
+      this.id = note._id;
       this.title = note.title;
       this.content = note.content;
       this.openDialog({ name: 'editNote' });
     },
     confirmCreate() {
-      this.createNote({ title: this.title, content: this.content });
+      this.createNote({ note: this.noteParams, params: this.queryParams });
       this.content = '';
       this.title = '';
       this.folded = true;
     },
     confirmEdit() {
-      this.editNote({ id: this.id, title: this.title, content: this.content });
+      this.editNote({ id: this.id, note: this.noteParams, params: this.queryParams});
+      this.closeDialog();
+    },
+    confirmRemove() {
+      this.removeNote({ id: this.id, params: this.queryParams });
       this.closeDialog();
     },
     foldCreatePane(isFold) {

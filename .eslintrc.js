@@ -50,5 +50,11 @@ module.exports = {
     'no-unused-expressions': 0,
     // allow require
     'global-require': 0,
+    // allow both string concatenation and template string
+    'prefer-template': 0,
+    // allow block statement surrounding arrow body
+    'arrow-body-style': 0,
+    // warn for unlisted project's dependencies
+    'import/no-extraneous-dependencies': process.env.NODE_ENV === 'production' ? 0 : 1,
   }
 }

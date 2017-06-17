@@ -1,30 +1,42 @@
 import Router from 'koa-router';
 import noteCtrl from '@server/controllers/noteCtrl';
-// import commonCtrl from '@server/controllers/commonCtrl';
+import indexCtrl from '@server/controllers/indexCtrl';
+import commonCtrl from '@server/controllers/commonCtrl';
 
 const router = new Router();
 
 export default (app) => {
-  router.get('*', async (ctx, next) => {
-    if (/^\/api/.test(ctx.request.url)) {
-      console.log('/api', true);
-      await next();
-      return;
-    }
-    return ctx.render('index');
-  });
+  router.get('*', indexCtrl.renderIndex);
 
   /**
    * {Note} - query all notes
-   * @return {Array} data notes list
-   * @return {Object} stats statistics information
+   * @body   {Object} conds - query conditions
+   * @body   {Object} orders - query orders
+   * @body   {Object} ranges - query ranges
+   * @return {Array} data - notes list
+   * @return {Object} stats - statistics information
    * @throws {Object} error
    * @example
    *   /api/note/query
    */
-  router.get('/api/note/query', noteCtrl.getAll);
-  router.post('/api/note/create', noteCtrl.createNote);
-  router.del('/api/note/remove/:id', noteCtrl.removeNote);
+  router.get('/api/note/query', commonCtrl.getList('NoteDetail'));
+  /**
+   * {Note} - create note
+   * @body   {Object}  data - new note info
+   * @body   {Object}  data - new note info
+   * @return {Object}  data - note created info
+   * @return {Boolean} success - operation status
+   * @throws {Object}  error
+   * @example
+   *   /api/note/create
+   */
+  router.post('/api/note/create', commonCtrl.create('NoteDetail'));
+  router.put('/api/note/edit/:id', commonCtrl.edit('NoteDetail'));
+  router.del('/api/note/remove/:id', commonCtrl.remove('NoteDetail'));
+  router.get('/api/label/query', commonCtrl.getList('Label'));
+  router.post('/api/label/create', commonCtrl.create('Label'));
+  router.put('/api/label/edit/:id', commonCtrl.edit('Label'));
+  router.del('/api/label/remove/:id', commonCtrl.remove('Label'));
 
   app
     .use(router.routes())

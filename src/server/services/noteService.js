@@ -8,7 +8,6 @@ async function create(note) {
       note[key] = null;
     }
   });
-  console.log(note, 111111);
   note.createTime = new Date().getTime();
   const data = await NoteDetail.create(note);
   return data;

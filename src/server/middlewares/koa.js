@@ -34,18 +34,8 @@ export default function (app) {
   });
 
   /**
-   * Counting time
-   */
-  // app.use(async (ctx, next) => {
-  //   const start = Date.now();
-  //   await next();
-  //   console.log(`[${ctx.request.method}][${ctx.request.url}] ${Date.now() - start} ms.`);
-  // });
-
-  /**
    * Serve pure static assets
    */
-  console.log(path.resolve(config.build.nodeModulesPath));
   const servePath = config.app.env === 'production'
     ? path.resolve(config.build.assetsRoot, config.build.assetsSubDirectory) : './static';
   const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);

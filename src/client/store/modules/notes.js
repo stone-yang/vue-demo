@@ -11,33 +11,26 @@ const state = {
 // getters
 const getters = {
   allNotes: (state) => {
-    let list = [...state.$list];
-    list = list.sort((a, b) => {
-      return new Date(b.createTime).getTime() - new Date(a.createTime).getTime();
-    });
-    console.log(list);
-    return list;
+    return state.$list;
   },
 };
 
 // actions
 const actions = {
-  query: async ({ commit }) => {
-    const res = await axios.get('/api/note/query');
-    commit(MUTYPES.NOTES.UPDATE_ALL, { $list: res.data });
+  query: async ({ commit }, params) => {
+    const { data } = await axios.get('/api/note/query', { params });
+    commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
-  create: async ({ commit }, note) => {
-    const data = await axios.post('/api/note/create', note);
-    commit(MUTYPES.NOTES.UPDATE_ONE, data);
+  create: async ({ commit }, { note, params }) => {
+    const { data } = await axios.post('/api/note/create', note, { params });
+    commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
-  edit({ commit }, note) {
-    // shop.getProducts(products => {
-    //   commit(MUTYPES.NOTES.REMOVE, { products });
-    // })
-    commit(MUTYPES.NOTES.UPDATE_ONE, note);
+  edit: async ({ commit }, { id, note, params }) => {
+    const { data } = await axios.put(`/api/note/edit/${id}`, note, { params });
+    commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
-  remove: async ({ commit }, { id }) => {
-    await axios.delete(`/api/note/remove/${id}`);
+  remove: async ({ commit }, { id, params }) => {
+    await axios.delete(`/api/note/remove/${id}`, { params });
     commit(MUTYPES.NOTES.REMOVE, { id });
   },
 };
@@ -49,10 +42,9 @@ const mutations = {
   },
   [MUTYPES.NOTES.UPDATE_ONE](state, note) {
     const $list = state.$list;
-    if (note.id) {
-      const idx = $list.findIndex(p => p.id === note.id);
-      $list[idx] = note;
-      state = { $list };
+    const idx = $list.findIndex(p => p._id === note._id);
+    if (idx >= 0) {
+      $list.splice(idx, 1, note);
     } else {
       state.$list.unshift(note);
     }

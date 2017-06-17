@@ -5,9 +5,14 @@ import commonCtrl from '@server/controllers/commonCtrl';
 const NoteDetail = mongoose.model('NoteDetail');
 
 async function createNote(ctx, next) {
-  const note = ctx.request.body;
-  const data = await noteService.create(note);
-  ctx.body = data;
+  const res = await commonCtrl.create(NoteDetail, ctx);
+  ctx.body = res;
+  await next();
+}
+
+async function editNote(ctx, next) {
+  const res = await commonCtrl.edit(NoteDetail, ctx);
+  ctx.body = res;
   await next();
 }
 
@@ -25,6 +30,7 @@ async function getAll(ctx, next) {
 
 export default {
   createNote,
+  editNote,
   getAll,
   removeNote,
 };

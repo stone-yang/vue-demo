@@ -3,7 +3,7 @@
 <template>
   <div id="app">
     <topbar @toggleMenu="toggleMenu({ show: !mainMenu.show })" />
-    <main-menu :show="mainMenu.show" />
+    <main-menu :show="mainMenu.show" @editLabel="openDialog({ name: 'editLabel' })" />
     <div class="main-container" :class="{ 'left-menu': mainMenu.show }">
       <router-view></router-view>
     </div>

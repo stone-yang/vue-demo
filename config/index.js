@@ -19,7 +19,7 @@ module.exports = {
     serverFilePath: path.resolve(__dirname, '../src/server'),
   },
   mongo: {
-    url: `mongodb://${MONGO_HOST}:27017/noteskeep`,
+    url: 'mongodb://' + MONGO_HOST + ':27017/noteskeep',
   },
   build: {
     env: BUILD_ENV,

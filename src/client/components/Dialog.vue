@@ -1,8 +1,9 @@
 <template>
-  <div class="dialog-wrapper" :class="{ hide: !show }">
+  <div class="dialog-wrapper hide" ref="diaw">
     <dialog open=true class="dialog-win" ref="dialog" @click.stop>
       <div class="dialog-win-inner">
         <!-- dialog content -->
+        <div class="title">{{ title }}</div>
         <slot></slot>
       </div>
       <div class="dialog-buttons">
@@ -20,6 +21,12 @@ export default {
   props: {
     show: Boolean,
     actions: Array,
+    title: String,
+  },
+  data() {
+    return {
+      a: false,
+    };
   },
   created() {
     document.querySelector('body').addEventListener('click', this.hide);
@@ -40,9 +47,21 @@ export default {
       const winWidth = diaEle.offsetWidth;
       const winHeight = diaEle.offsetHeight;
       diaEle.style.marginLeft = `${-winWidth / 2}px`;
-      diaEle.style.marginTop = `${-(winHeight / 2) - 100}px`;
+      diaEle.style.marginTop = `${-winHeight / 2}px`;
       diaEle.style.left = '50%';
       diaEle.style.top = '50%';
+    },
+  },
+  watch: {
+    show() {
+      const diaw = this.$refs.diaw;
+      if (this.show) {
+        diaw.style.display = 'block';
+        document.querySelector('body').appendChild(diaw);
+      } else {
+        diaw.style.display = 'none';
+        document.querySelector('body').removeChild(diaw);
+      }
     },
   },
 };

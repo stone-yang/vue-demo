@@ -1,18 +1,52 @@
 import commonService from '@server/services/commonService';
+import qs from 'qs';
 
-async function getList(Model, ctx) {
-  const { conds = {}, orders = null, ranges = null } = ctx.query;
-  const data = await commonService.getList(Model, conds, orders, ranges);
-  return { data, stats: ranges };
+function getList(modelName) {
+  return async function (ctx, next) {
+    const { conds = {}, orders = null, ranges = null } = qs.parse(ctx.query);
+    const data = await commonService.getList(modelName, conds, orders, ranges);
+    ctx.body = { data, stats: ranges, success: true };
+    await next();
+  };
 }
 
-async function remove(Model, ctx) {
-  const id = ctx.params.id;
-  const data = await commonService.remove(Model, id);
-  return { success: true };
+function create(modelName) {
+  return async function (ctx, next) {
+    const createBody = ctx.request.body;
+    await commonService.create(modelName, createBody);
+    const { conds = {}, orders = null, ranges = null } = qs.parse(ctx.query);
+    const data = await commonService.getList(modelName, conds, orders, ranges);
+    ctx.body = { success: true, data };
+    await next();
+  };
+}
+
+function edit(modelName) {
+  return async function (ctx, next) {
+    const id = ctx.params.id;
+    const editBody = ctx.request.body;
+    await commonService.edit(modelName, id, editBody);
+    const { conds = {}, orders = null, ranges = null } = qs.parse(ctx.query);
+    const data = await commonService.getList(modelName, conds, orders, ranges);
+    ctx.body = { success: true, data };
+    await next();
+  };
+}
+
+function remove(modelName) {
+  return async function remove(ctx, next) {
+    const id = ctx.params.id;
+    await commonService.remove(modelName, id);
+    const { conds = {}, orders = null, ranges = null } = qs.parse(ctx.query);
+    const data = await commonService.getList(modelName, conds, orders, ranges);
+    ctx.body = { success: true, data };
+    await next();
+  };
 }
 
 export default {
   getList,
+  create,
+  edit,
   remove,
 };

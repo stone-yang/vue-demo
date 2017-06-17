@@ -9,28 +9,62 @@
     <ul class="menu-section">
       <li class="menu-item title">
         Lables
-        <button type="button" class="menu-item-text">EDIT</button>
+        <button type="button" class="menu-item-text" @click.stop="openDialog({ name: 'editLabel' })">EDIT</button>
       </li>
-      <li class="menu-item">
+      <li class="menu-item" v-for="label in labels">
         <i class="mdi mdi-label"></i>
-        <span class="menu-item-text">Label One</span>
-      </li>
-      <li class="menu-item">
-        <i class="mdi mdi-label"></i>
-        <span class="menu-item-text">Label Two</span>
-      </li>
-      <li class="menu-item">
-        <i class="mdi mdi-label"></i>
-        <span class="menu-item-text">Label Three</span>
+        <span class="menu-item-text">{{ label.title }}</span>
       </li>
     </ul>
+    <!-- note edit dialog -->
+    <app-dialog :show="dialog.editLabel || false" @hide="() => dialog.editLabel && closeDialog()"
+      :actions="settings.dialog.actions" title="Edit Labels">
+      <div class="label-dialog-wrapper">
+        <LabelEditPane :show="dialog.editLabel || false" :labels="labels" />
+      </div>
+    </app-dialog>
   </menu>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import AppDialog from '@/components/Dialog';
+import LabelEditPane from '@/components/LabelEditPane';
+
 export default {
   name: 'MainMenu',
   props: ['show'],
+  components: { AppDialog, LabelEditPane },
+  mounted() {
+    this.queryLabels({ orders: { createTime: -1 } });
+  },
+  computed: {
+    ...mapGetters({
+      mainMenu: 'components/mainMenu',
+      dialog: 'components/dialog',
+      labels: 'labels/all',
+    }),
+    settings() {
+      return {
+        dialog: {
+          actions: [{
+            name: 'DONE',
+            handler: this.closeDialog,
+          }],
+        },
+      };
+    },
+  },
+  methods: {
+    ...mapMutations({
+      openDialog: 'components/openDialog',
+      closeDialog: 'components/closeDialog',
+      toggleMenu: 'components/toggleMainMenu',
+    }),
+    ...mapActions({
+      queryLabels: 'labels/query',
+    }),
+  },
 };
 </script>
 

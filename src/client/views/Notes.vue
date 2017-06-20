@@ -3,17 +3,19 @@
     <note-create-pane
       :values="{ title, content }"
       :folded="folded"
+      :color="color"
       @input="changeFormValues"
       @create="confirmCreate"
       @fold="foldCreatePane" />
     <note-list-pane v-for="(note, idx) in notes" 
       :note="note" :key="idx"
       @edit="showEditForm"
-      @remove="removeNote({ id: note._id, params: queryParams })" />
+      @remove="removeNote({ id: note._id, params: queryParams })"
+      @changeColor="(c) => { retrieveFormValues(note); color = c; confirmEdit(); }" />
 
     <!-- note edit dialog -->
     <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog()"
-      :actions="settings.dialog.actions">
+      :actions="settings.dialog.actions" :color="color">
       <div class="note-wrapper">
         <input type="text" placeholder="Title" class="note-title" v-model="title" />
         <textarea ref="noteContent" placeholder="Take a note..."
@@ -42,13 +44,18 @@ export default {
       id: '',
       title: '',
       content: '',
+      color: '',
       // initially fold the note-create-pane
       folded: true,
     };
   },
   computed: {
     noteParams() {
-      return { title: this.title, content: this.content };
+      return { 
+        title: this.title, 
+        content: this.content,
+        color: this.color,
+      };
     },
     queryParams() {
       return {
@@ -86,32 +93,45 @@ export default {
     changeFormValues(key, value) {
       this[key] = value;
     },
-    showEditForm(note) {
+    retrieveFormValues(note) {
       this.id = note._id;
       this.title = note.title;
       this.content = note.content;
+      this.color = note.color;
+    },
+    clearFormValues() {
+      this.content = '';
+      this.title = '';
+      this.color = '';
+      this.folded = true;
+    },
+    showEditForm(note) {
+      this.retrieveFormValues(note);
       this.openDialog({ name: 'editNote' });
     },
     confirmCreate() {
       this.createNote({ note: this.noteParams, params: this.queryParams });
-      this.content = '';
-      this.title = '';
-      this.folded = true;
+      this.clearFormValues();
     },
     confirmEdit() {
-      this.editNote({ id: this.id, note: this.noteParams, params: this.queryParams});
+      this.editNote({ 
+        id: this.id, 
+        note: this.noteParams, 
+        params: this.queryParams, 
+      });
       this.closeDialog();
+      this.clearFormValues();
     },
     confirmRemove() {
       this.removeNote({ id: this.id, params: this.queryParams });
       this.closeDialog();
+      this.clearFormValues();
     },
     foldCreatePane(isFold) {
-      this.folded = isFold;
       if (!isFold) {
-        this.content = '';
-        this.title = '';
+        this.clearFormValues();
       }
+      this.folded = isFold;
     },
   },
 };
@@ -120,7 +140,7 @@ export default {
 <style lang='less' scoped>
 .note-wrapper {
   position: relative;
-  background-color: #fff;
+  // background-color: #fff;
   width: 100%;
   min-width: 600px;
   border-radius: 2px;

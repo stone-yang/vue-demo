@@ -1,5 +1,6 @@
 <template>
-  <div class="note-wrapper" :class="{ folded }" @click.stop>
+  <section class="note-wrapper" :class="{ folded }"
+    :style="{ 'background-color': cColor }" @click.stop>
     <div class="pane">
       <input type="text" placeholder="Take a note..." class="note-input"
         @focus="$emit('fold', false)" v-show="folded" />
@@ -14,8 +15,10 @@
           @input="$emit('input', 'content', $event.target.value)"
           class="note-content"></textarea>
         <!-- note toolbar -->
-        <note-toolbar :opType="0" />
-        <button type="button" class="pane-op-button" @click="$emit('create')">DONE</button>
+        <note-toolbar :opType="0"
+          @changeColor="(color) => { cColor = color; $emit('input', 'color', color); }" />
+        <button type="button" class="pane-op-button" 
+          @click="() => { $emit('create'); cColor = ''; }">DONE</button>
       </div>
     </div>
     <div class="icon-btn image" v-show="folded">
@@ -25,7 +28,7 @@
       <i class="mdi mdi-format-list-checks"></i>
     </div>
     <div class="clear"></div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -33,13 +36,18 @@ import NoteToolbar from '@/components/NoteToolbar';
 
 export default {
   name: 'NoteCreatePane',
-  props: ['values', 'folded'],
+  props: ['values', 'folded', 'color'],
   components: { NoteToolbar },
+  data() {
+    return {
+      cColor: '',
+    };
+  },
   created() {
-    document.querySelector('body').addEventListener('click', this.foldPane);
+    document.body.addEventListener('click', this.foldPane);
   },
   beforeDestroy() {
-    document.querySelector('body').removeEventListener('click', this.foldPane);
+    document.body.removeEventListener('click', this.foldPane);
   },
   methods: {
     foldPane() {

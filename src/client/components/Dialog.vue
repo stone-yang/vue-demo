@@ -1,13 +1,14 @@
 <template>
-  <div class="dialog-wrapper hide" ref="diaw">
-    <dialog open=true class="dialog-win" ref="dialog" @click.stop>
+  <div class="dialog-wrapper" v-show="show" ref="diaw">
+    <dialog open=true class="dialog-win" ref="dialog" @click.stop
+      :style="{ 'background-color': color }">
       <div class="dialog-win-inner">
         <!-- dialog content -->
         <div class="title">{{ title }}</div>
         <slot></slot>
       </div>
       <div class="dialog-buttons">
-        <button type="button" v-for="(action, idx) in actions" 
+        <button type="button" v-for="(action, idx) in actions" v-if="action.handler"
           :key="idx" @click="action.handler">{{action.name}}</button>
       </div>
     </dialog>
@@ -22,21 +23,25 @@ export default {
     show: Boolean,
     actions: Array,
     title: String,
+    color: String,
   },
   data() {
     return {
-      a: false,
+      init: false,
     };
   },
   created() {
-    document.querySelector('body').addEventListener('click', this.hide);
-    // this.setPosition();
+    document.body.addEventListener('click', this.hide);
   },
   updated() {
+    if (!this.init) {
+      this.initDialog();
+      this.init = true;
+    }
     this.show && this.setPosition();
   },
   beforeDestroy() {
-    document.querySelector('body').removeEventListener('click', this.hide);
+    document.body.removeEventListener('click', this.hide);
   },
   methods: {
     hide() {
@@ -51,17 +56,10 @@ export default {
       diaEle.style.left = '50%';
       diaEle.style.top = '50%';
     },
-  },
-  watch: {
-    show() {
+    initDialog() {
       const diaw = this.$refs.diaw;
-      if (this.show) {
-        diaw.style.display = 'block';
-        document.querySelector('body').appendChild(diaw);
-      } else {
-        diaw.style.display = 'none';
-        document.querySelector('body').removeChild(diaw);
-      }
+      diaw.parentNode.removeChild(diaw);
+      document.body.appendChild(diaw);
     },
   },
 };

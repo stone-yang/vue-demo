@@ -26,6 +26,7 @@ const actions = {
     commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
   edit: async ({ commit }, { id, note, params }) => {
+    console.log(note);
     const { data } = await axios.put(`/api/note/edit/${id}`, note, { params });
     commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },

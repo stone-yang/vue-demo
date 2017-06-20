@@ -1,5 +1,6 @@
 <template>
-  <div class="note-wrapper" 
+  <section class="note-wrapper"
+    :style="{ 'background-color': note.color }"
     @mouseenter="hover = true" @mouseleave="hover = false"
     @click.stop="$emit('edit', note)">
     <div class="pane">
@@ -7,17 +8,18 @@
         <!-- note title -->
         <div class="note-title">{{ note.title }}</div>
         <div class="note-content">{{ note.content }}</div>
-        <!-- note toolbar -->
-        <!--<button type="button" class="pane-op-button">DONE</button>-->
       </div>
       <div :style="{ height: '24px' }" @click.stop>
+        <!-- note toolbar -->
         <div v-show="hover">
-          <note-toolbar :opType="1" :note="note" @remove="$emit('remove')" />
+          <note-toolbar :opType="1" :note="note" 
+            @remove="$emit('remove')"
+            @changeColor="(color) => $emit('changeColor', color)" />
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div>
+  </section>
 </template>
 
 <script>

@@ -1,8 +1,11 @@
 <template>
-  <div class="toolbar-wrapper">
+  <section class="toolbar-wrapper">
     <ul>
-      <li class="icon-btn">
+      <li class="icon-btn" @mouseenter="showOperationPane('cHover', true)" 
+        @mouseleave="showOperationPane('cHover', false)">
         <i class="mdi mdi-palette"></i>
+        <ColorPane :activeColor="note && note.color" :show="cHover"
+          @changeColor="(color) => $emit('changeColor', color)" />
       </li>
       <li class="icon-btn" v-if="opType === 0">
         <i class="mdi mdi-image"></i>
@@ -16,14 +19,16 @@
       </li>
     </ul>
     <div class="clear"></div>
-  </div>
+  </section>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import ColorPane from '@/components/ColorPane';
 
 export default {
   name: 'NoteToolbar',
+  components: { ColorPane },
   props: {
     // operation type: 0 - create, 1 - edit
     opType: {
@@ -33,12 +38,22 @@ export default {
     note: Object,
   },
   data() {
-    return { noteId: this.note && this.note.id };
+    return { 
+      noteId: this.note && this.note.id,
+      cHover: false,
+      timer: null,
+    };
   },
   methods: {
     ...mapActions({
       remove: 'notes/remove',
     }),
+    showOperationPane(name, show) {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this[name] = show;
+      }, 200);
+    },
   },
 };
 </script>
@@ -50,6 +65,7 @@ export default {
   margin-left: -10px;
 }
 .icon-btn {
+  position: relative;
   float: left;
   height: 24px;
   padding: 0 14px;

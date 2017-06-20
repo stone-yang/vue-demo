@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <section class="topbar">
     <div class="icon-btn menu-icon" @click="$emit('toggleMenu')">
       <i class="mdi mdi-menu"></i>
     </div>
@@ -35,7 +35,7 @@
     <div class="user-account">
       <i class="mdi mdi-account"></i>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.wrapper {
+.topbar {
   position: fixed;
   z-index: 1000;
   background-color: #fb0;

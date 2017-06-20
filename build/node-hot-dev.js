@@ -14,7 +14,7 @@ webpack(webpackServerConfig).watch({
     // pass a number to set the polling interval
 }, function(err, stats) {
   if (!started) {
-    const server = spawn('babel-node', ['dist/server.js']);
+    const server = spawn('node', ['dist/server.js']);
     server.stdout.on('data', (data) => process.stdout.write(data));
     server.stderr.on('data', (data) => process.stderr.write(data));
     server.on('exit', (code) => {

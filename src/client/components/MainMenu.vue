@@ -1,5 +1,5 @@
 <template>
-  <menu :class="{ hide: !show }">
+  <menu v-show="show">
     <ul class="menu-section">
       <li class="menu-item">
         <i class="mdi mdi-lightbulb"></i>

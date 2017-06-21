@@ -3,6 +3,7 @@ import path from 'path';
 import webpack from 'webpack';
 import koaWebpackMiddleware from 'koa-webpack-middleware';
 import koaWebpackDevMiddleware from 'koa-webpack-dev-middleware';
+import connectHistoryApiFallback from 'koa2-history-api-fallback';
 import convert from 'koa-convert';
 import config from '@global/config';
 
@@ -48,7 +49,7 @@ compiler.plugin('compilation', (compilation) => {
 
 export default function (app) {
   // handle fallback for HTML5 history API
-  // app.use(require('connect-history-api-fallback')())
+  app.use(connectHistoryApiFallback());
 
   // serve webpack bundle output
   app.use(convert(devMiddleware));

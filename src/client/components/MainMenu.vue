@@ -2,8 +2,10 @@
   <menu v-show="show">
     <ul class="menu-section">
       <li class="menu-item">
-        <i class="mdi mdi-lightbulb"></i>
-        <span class="menu-item-text">Notes</span>
+        <router-link to="/notes">
+          <i class="mdi mdi-lightbulb"></i>
+          <span class="menu-item-text">Notes</span>
+        </router-link>
       </li>
     </ul>
     <ul class="menu-section">
@@ -12,8 +14,10 @@
         <button type="button" class="menu-item-text" @click.stop="openDialog({ name: 'editLabel' })">EDIT</button>
       </li>
       <li class="menu-item" v-for="label in labels">
-        <i class="mdi mdi-label"></i>
-        <span class="menu-item-text">{{ label.title }}</span>
+        <router-link :to="`/label/${label.title}`">
+          <i class="mdi mdi-label"></i>
+          <span class="menu-item-text">{{ label.title }}</span>
+        </router-link>
       </li>
     </ul>
     <!-- note edit dialog -->
@@ -28,6 +32,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+import Router from 'vue-router';
 import AppDialog from '@/components/Dialog';
 import LabelEditPane from '@/components/LabelEditPane';
 
@@ -102,6 +107,13 @@ menu {
       padding: 0 16px;
       font-weight: bold;
     }
+  }
+  a { 
+    display: inline-block;
+    width: 100%; 
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
   }
 }
 .menu-item-text {

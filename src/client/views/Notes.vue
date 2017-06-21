@@ -43,6 +43,7 @@ export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
   mounted() {
+    console.log('mounted');
     this.queryNote(this.queryParams);
   },
   data() {
@@ -65,16 +66,25 @@ export default {
       };
     },
     queryParams() {
-      return {
+      const params = {
         orders: {
           createTime: -1,
         },
         related: 'labels',
       };
+      if (this.$route.name === 'Label') {
+        const l = this.labels.filter(l => l.title === this.$route.params.labelName)[0];
+        const id = l && l._id;
+        params.conds = {
+          labels: id,
+        };
+      }
+      return params;
     },
     ...mapGetters({
       dialog: 'components/dialog',
       notes: 'notes/allNotes',
+      labels: 'labels/all',
     }),
     settings() {
       return {
@@ -147,6 +157,14 @@ export default {
         this.clearFormValues();
       }
       this.folded = isFold;
+    },
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      if (to.name === 'Notes' || to.name === 'Label') {
+        this.queryNote(this.queryParams);
+      }
     },
   },
 };

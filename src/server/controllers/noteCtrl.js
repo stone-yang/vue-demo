@@ -1,36 +1,20 @@
 import mongoose from 'mongoose';
 import noteService from '@server/services/noteService';
-import commonCtrl from '@server/controllers/commonCtrl';
+import commonService from '@server/services/commonService';
 
 const NoteDetail = mongoose.model('NoteDetail');
 
-async function createNote(ctx, next) {
-  const res = await commonCtrl.create(NoteDetail, ctx);
-  ctx.body = res;
-  await next();
-}
-
-async function editNote(ctx, next) {
-  const res = await commonCtrl.edit(NoteDetail, ctx);
-  ctx.body = res;
-  await next();
-}
-
-async function removeNote(ctx, next) {
-  const res = await commonCtrl.remove(NoteDetail, ctx);
-  ctx.body = res;
-  await next();
-}
-
-async function getAll(ctx, next) {
-  const res = await commonCtrl.getList(NoteDetail, ctx);
-  ctx.body = res;
+async function editLabel(ctx, next) {
+  const noteId = ctx.params.id;
+  const labelId = ctx.request.body.label;
+  const isAdd = ctx.request.body.isAdd;
+  await noteService.attachLabel(noteId, labelId, isAdd);
+  await noteService.attachNote(noteId, labelId, isAdd);
+  const data = await commonService.getList('NoteDetail', { _id: noteId }, null, null, 'labels');
+  ctx.body = { success: true, data };
   await next();
 }
 
 export default {
-  createNote,
-  editNote,
-  getAll,
-  removeNote,
+  editLabel,
 };

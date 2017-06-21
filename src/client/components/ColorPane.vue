@@ -29,7 +29,7 @@ export default {
 .color-pane {
   position: absolute;
   left: 14px;
-  top: -70px;
+  bottom: 100%;
   width: 136px;
   padding: 3px 7px;
   background-color: #fff;

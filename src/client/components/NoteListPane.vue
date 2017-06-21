@@ -2,20 +2,22 @@
   <section class="note-wrapper"
     :style="{ 'background-color': note.color }"
     @mouseenter="hover = true" @mouseleave="hover = false"
-    @click.stop="$emit('edit', note)">
+    @click="$emit('edit', note)">
     <div class="pane">
       <div class="pane-inner">
         <!-- note title -->
         <div class="note-title">{{ note.title }}</div>
         <div class="note-content">{{ note.content }}</div>
       </div>
+      <div class="note-labels">
+        <li class="list-item" v-for="label in note.labels">{{ label.title }}</li>
+      </div>
       <div :style="{ height: '24px' }" @click.stop>
         <!-- note toolbar -->
-        <div v-show="hover">
-          <note-toolbar :opType="1" :note="note" 
-            @remove="$emit('remove')"
-            @changeColor="(color) => $emit('changeColor', color)" />
-        </div>
+        <note-toolbar :opType="1" :note="note" :show="hover"
+          @remove="$emit('remove')"
+          @changeColor="(color) => $emit('changeColor', color)"
+          @changeLabel="(label, isAdd) => { $emit('changeLabel', label, isAdd); }" />
       </div>
     </div>
     <div class="clear"></div>
@@ -28,7 +30,12 @@ import NoteToolbar from '@/components/NoteToolbar';
 export default {
   name: 'NoteListPane',
   components: { NoteToolbar },
-  props: ['note'],
+  props: {
+    note: {
+      type: Object,
+      default: () => { labels: [] },
+    },
+  },
   data() {
     return {
       hover: false,
@@ -61,5 +68,18 @@ export default {
 }
 .note-title {
   font-weight: bold;
+}
+.note-labels {
+  text-align: right;
+  .list-item {
+    display: inline-block;
+    min-width: 40px;
+    margin-left: 4px;
+    padding: 4px 9px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: bold;
+  }
 }
 </style>

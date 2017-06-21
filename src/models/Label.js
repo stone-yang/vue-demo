@@ -14,7 +14,7 @@ const Label = {
   },
 
   notes: {
-    code: 'labels',
+    code: 'notes',
     type: Object,
     isArray: true,
     ref: 'NoteDetail',

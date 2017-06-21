@@ -1,23 +1,25 @@
 import mongoose from 'mongoose';
 
 const NoteDetail = mongoose.model('NoteDetail');
+const Label = mongoose.model('Label');
 
-async function create(note) {
-  Object.keys(note).forEach((key) => {
-    if (note[key] === '') {
-      note[key] = null;
-    }
-  });
-  note.createTime = new Date().getTime();
-  const data = await NoteDetail.create(note);
-  return data;
+async function attachLabel(noteId, labelId, isAdd) {
+  if (isAdd) {
+    await NoteDetail.updateOne({ _id: noteId }, { $push: { labels: labelId } });
+  } else {
+    await NoteDetail.updateOne({ _id: noteId }, { $pull: { labels: labelId } });
+  }
 }
 
-async function getList(note) {
-  const data = await NoteDetail.create(note);
-  return data;
+async function attachNote(noteId, labelId, isAdd) {
+  if (isAdd) {
+    await Label.updateOne({ _id: labelId }, { $push: { notes: noteId } });
+  } else {
+    await Label.updateOne({ _id: labelId }, { $pull: { notes: noteId } });
+  }
 }
 
 export default {
-  create,
+  attachLabel,
+  attachNote,
 };

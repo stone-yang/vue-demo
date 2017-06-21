@@ -29,7 +29,7 @@ const NoteDetail = {
     code: 'labels',
     type: Object,
     isArray: true,
-    // ref: 'Label',
+    ref: 'Label',
   },
 
   createTime: {

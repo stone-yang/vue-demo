@@ -34,6 +34,11 @@ const actions = {
     await axios.delete(`/api/note/remove/${id}`, { params });
     commit(MUTYPES.NOTES.REMOVE, { id });
   },
+  editLabel: async ({ commit }, { id, body }) => {
+    const { data } = await axios.put(`/api/note/editLabel/${id}`, body);
+    commit(MUTYPES.NOTES.UPDATE_ONE, data[0]);
+    return data[0];
+  },
 };
 
 // mutations

@@ -33,6 +33,7 @@ export default (app) => {
   router.post('/api/note/create', commonCtrl.create('NoteDetail'));
   router.put('/api/note/edit/:id', commonCtrl.edit('NoteDetail'));
   router.del('/api/note/remove/:id', commonCtrl.remove('NoteDetail'));
+  router.put('/api/note/editLabel/:id', noteCtrl.editLabel);
   router.get('/api/label/query', commonCtrl.getList('Label'));
   router.post('/api/label/create', commonCtrl.create('Label'));
   router.put('/api/label/edit/:id', commonCtrl.edit('Label'));

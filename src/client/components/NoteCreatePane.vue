@@ -15,7 +15,7 @@
           @input="$emit('input', 'content', $event.target.value)"
           class="note-content"></textarea>
         <!-- note toolbar -->
-        <note-toolbar :opType="0"
+        <note-toolbar :opType="0" :show="true"
           @changeColor="(color) => { cColor = color; $emit('input', 'color', color); }" />
         <button type="button" class="pane-op-button" 
           @click="() => { $emit('create'); cColor = ''; }">DONE</button>

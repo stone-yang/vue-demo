@@ -1,6 +1,6 @@
 <template>
   <div class="dialog-wrapper" v-show="show" ref="diaw">
-    <dialog open=true class="dialog-win" ref="dialog" @click.stop
+    <dialog open=true class="dialog-win" ref="dialog"
       :style="{ 'background-color': color }">
       <div class="dialog-win-inner">
         <!-- dialog content -->
@@ -12,7 +12,7 @@
           :key="idx" @click="action.handler">{{action.name}}</button>
       </div>
     </dialog>
-    <div class="dialog-shade"></div>
+    <div class="dialog-shade" ref="dias"></div>
   </div>
 </template>
 
@@ -44,8 +44,10 @@ export default {
     document.body.removeEventListener('click', this.hide);
   },
   methods: {
-    hide() {
-      this.$emit('hide');
+    hide(e) {
+      if (e.target === this.$refs.dias) {
+        this.$emit('hide');
+      }
     },
     setPosition() {
       const diaEle = this.$refs.dialog;

@@ -1,17 +1,20 @@
 <template>
-  <section class="toolbar-wrapper">
+  <section class="toolbar-wrapper" v-show="toolbarShow || show">
     <ul>
       <li class="icon-btn" @mouseenter="showOperationPane('cHover', true)" 
-        @mouseleave="showOperationPane('cHover', false)">
+        @mouseleave="showOperationPane('cHover', false)" @click.stop>
         <i class="mdi mdi-palette"></i>
-        <ColorPane :activeColor="note && note.color" :show="cHover"
+        <color-pane :activeColor="note && note.color" :show="cHover"
           @changeColor="(color) => $emit('changeColor', color)" />
       </li>
       <li class="icon-btn" v-if="opType === 0">
         <i class="mdi mdi-image"></i>
       </li>
-      <li class="icon-btn">
+      <li class="icon-btn" @click.stop="lShow = true; toolbarShow = true">
         <i class="mdi mdi-label"></i>
+        <label-select-pane :show="lShow" :labelDetails="note && note.labels" 
+          @hide="lShow = false; toolbarShow = false"
+          @changeLabel="(label, isAdd) => { $emit('changeLabel', label, isAdd); }" />
       </li>
       <li class="icon-btn" v-if="opType === 1"
         @click="$emit('remove')">
@@ -25,22 +28,29 @@
 <script>
 import { mapActions } from 'vuex';
 import ColorPane from '@/components/ColorPane';
+import LabelSelectPane from '@/components/LabelSelectPane';
 
 export default {
   name: 'NoteToolbar',
-  components: { ColorPane },
+  components: { ColorPane, LabelSelectPane },
   props: {
     // operation type: 0 - create, 1 - edit
     opType: {
       type: Number,
       default: 1,
     },
-    note: Object,
+    note: {
+      type: Object,
+      default: () => { labels: [] },
+    },
+    show: Boolean,
   },
   data() {
     return { 
       noteId: this.note && this.note.id,
+      toolbarShow: false, 
       cHover: false,
+      lShow: false,
       timer: null,
     };
   },

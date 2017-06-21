@@ -11,17 +11,23 @@
       :note="note" :key="idx"
       @edit="showEditForm"
       @remove="removeNote({ id: note._id, params: queryParams })"
-      @changeColor="(c) => { retrieveFormValues(note); color = c; confirmEdit(); }" />
+      @changeColor="(c) => { retrieveFormValues(note); color = c; confirmEdit(); }"
+      @changeLabel="(label, isAdd) => { retrieveFormValues(note); confirmEditLabel(label, isAdd); }" />
 
     <!-- note edit dialog -->
-    <app-dialog :show="dialog.editNote || false" @hide="() => dialog.editNote && closeDialog()"
+    <app-dialog :show="dialog.editNote || false" @hide="dialog.editNote && closeDialog()"
       :actions="settings.dialog.actions" :color="color">
       <div class="note-wrapper">
         <input type="text" placeholder="Title" class="note-title" v-model="title" />
         <textarea ref="noteContent" placeholder="Take a note..."
           class="note-content" v-model="content"></textarea>
       </div>
-      <note-toolbar :opType="1" @remove="confirmRemove" />
+      <div class="note-labels">
+        <li class="list-item" v-for="label in note && note.labels">{{ label.title }}</li>
+      </div>
+      <note-toolbar :note="note" :show="true" :opType="1" @remove="confirmRemove"
+        @changeColor="(c) => { color = c; confirmEdit(); }"
+        @changeLabel="(label, isAdd) => { confirmEditLabel(label, isAdd); }" />
     </app-dialog>
   </div>
 </template>
@@ -45,6 +51,7 @@ export default {
       title: '',
       content: '',
       color: '',
+      note: {},
       // initially fold the note-create-pane
       folded: true,
     };
@@ -62,6 +69,7 @@ export default {
         orders: {
           createTime: -1,
         },
+        related: 'labels',
       };
     },
     ...mapGetters({
@@ -88,6 +96,7 @@ export default {
       queryNote: 'notes/query',
       createNote: 'notes/create',
       editNote: 'notes/edit',
+      editLabel: 'notes/editLabel',
       removeNote: 'notes/remove',
     }),
     changeFormValues(key, value) {
@@ -98,11 +107,13 @@ export default {
       this.title = note.title;
       this.content = note.content;
       this.color = note.color;
+      this.note = note;
     },
     clearFormValues() {
       this.content = '';
       this.title = '';
       this.color = '';
+      this.note = {};
       this.folded = true;
     },
     showEditForm(note) {
@@ -121,6 +132,10 @@ export default {
       });
       this.closeDialog();
       this.clearFormValues();
+    },
+    async confirmEditLabel(label, isAdd) {
+      const note = await this.editLabel({ id: this.id, body: { label, isAdd } });
+      this.retrieveFormValues(note);
     },
     confirmRemove() {
       this.removeNote({ id: this.id, params: this.queryParams });
@@ -153,5 +168,18 @@ export default {
 }
 .note-title {
   font-weight: bold;
+}
+.note-labels {
+  text-align: right;
+  .list-item {
+    display: inline-block;
+    min-width: 40px;
+    margin-left: 4px;
+    padding: 4px 9px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: bold;
+  }
 }
 </style>

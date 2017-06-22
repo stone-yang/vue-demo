@@ -1,5 +1,5 @@
 <template>
-  <section class="topbar">
+  <section class="topbar" :class="`theme-${themeColor}`">
     <div class="icon-btn menu-icon" @click="$emit('toggleMenu')">
       <i class="mdi mdi-menu"></i>
     </div>
@@ -10,7 +10,8 @@
       <div class="icon-btn">
         <i class="mdi mdi-magnify"></i>
       </div>
-      <input type="text" placeholder="search" class="search-bar-field" />
+      <input type="text" placeholder="search" class="search-bar-field"
+        @focus="$emit('searchbarFocus')" />
       <div class="icon-btn search-clear">
         <i class="mdi mdi-close"></i>
       </div>
@@ -41,22 +42,22 @@
 <script>
 export default {
   name: 'Topbar',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-    };
+  props: {
+    themeColor: String,
   },
 };
 </script>
 
 <style lang='less' scoped>
+@import '../styles/main.less';
 .topbar {
   position: fixed;
   z-index: 1000;
-  background-color: #fb0;
   width: 100%;
   height: 64px;
   padding: 8px;
+  background-color: @theme-color-yellow;
+  transition: background-color 0.4s ease-in;
 
   > div {
     display: inline-block;
@@ -68,9 +69,10 @@ export default {
     height: 48px;
     width: 56%;
     margin-right: 30px;
-    background-color: #f5b400;
     border-radius: 4px;
     vertical-align: top;
+    background-color: #f5b400;
+    transition: background-color 0.4s ease-in;
     .search-clear {
       float: right;
     }
@@ -79,6 +81,7 @@ export default {
     vertical-align: top;
     height: 48px;
     width: 80%;
+    color: #e0e0e0;
   }
 
   .user-account {
@@ -99,13 +102,10 @@ export default {
 .icon-btn {
   display: inline-block;
   padding: 10px 12px;
-  color: #765700;
+  // color: #765700;
   font-size: 24px;
   border-radius: 50%;
   cursor: pointer;
-  &:hover {
-    color: #221900;
-  }
 }
 .top-title {
   // font-family: 'Roboto', 'RobotoDraft', Arial, sans-serif;
@@ -114,5 +114,35 @@ export default {
   padding-right: 32px;
   line-height: 48px;
   font-size: 22px;
+}
+.theme-yellow {
+  background-color: @theme-color-yellow;
+  color: #765700;
+  .icon-btn:hover {
+    color: #221900;
+  }
+  .search-bar {
+    background-color: #f5b400;
+  }
+}
+.theme-cerulean {
+  background-color: @theme-color-cerulean;
+  color: #fff;
+  .icon-btn:hover {
+    color: #e0e0e0;
+  }
+  .search-bar {
+    background-color: #7a929e;
+  }
+}
+.theme-dark-blue {
+  background-color: @theme-color-dark-blue;
+  color: #fff;
+  .icon-btn:hover {
+    color: #e0e0e0;
+  }
+  .search-bar {
+    background-color: #5d6cc0;
+  }
 }
 </style>

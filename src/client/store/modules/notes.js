@@ -10,7 +10,7 @@ const state = {
 
 // getters
 const getters = {
-  allNotes: (state) => {
+  allNotes: (state, getters, rootState) => {
     return state.$list;
   },
 };

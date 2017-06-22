@@ -2,7 +2,9 @@
 <style src="mdi/css/materialdesignicons.min.css"></style>
 <template>
   <div id="app">
-    <topbar @toggleMenu="toggleMenu({ show: !mainMenu.show })" />
+    <topbar :themeColor="$route.meta.themeColor"
+      @toggleMenu="toggleMenu({ show: !mainMenu.show })"
+      @searchbarFocus="$router.push('/search')" />
     <main-menu :show="mainMenu.show" @editLabel="openDialog({ name: 'editLabel' })" />
     <section class="main-container" :class="{ 'left-menu': mainMenu.show }">
       <router-view></router-view>
@@ -28,15 +30,15 @@ export default {
       toggleMenu: 'components/toggleMainMenu',
     }),
   },
-  watch: {
-    mainMenu() {
-      console.log(this.mainMenu);
-    },
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     console.log(this.$route);
+  //   },
+  // },
 };
 </script>
 
-<style lang='less' >
+<style lang='less'>
 @import './styles/main.less';
 #app {
   -webkit-font-smoothing: antialiased;

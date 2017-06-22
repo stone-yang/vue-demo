@@ -11,11 +11,25 @@ export default new Router({
       path: '/notes',
       name: 'Notes',
       component: Notes,
+      meta: {
+        themeColor: 'yellow',
+      },
     },
     {
       path: '/label/:labelName',
       name: 'Label',
       component: Notes,
+      meta: {
+        themeColor: 'cerulean',
+      },
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Notes,
+      meta: {
+        themeColor: 'dark-blue',
+      },
     },
     {
       path: '/',

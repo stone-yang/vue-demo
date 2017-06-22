@@ -42,9 +42,9 @@ import AppDialog from '@/components/Dialog';
 export default {
   name: 'Notes',
   components: { NoteCreatePane, NoteListPane, NoteToolbar, AppDialog },
-  mounted() {
-    console.log('mounted');
-    this.queryNote(this.queryParams);
+  async mounted() {
+    await this.queryNote(this.queryParams);
+    this.notes = this.getNotes();
   },
   data() {
     return {
@@ -55,6 +55,7 @@ export default {
       note: {},
       // initially fold the note-create-pane
       folded: true,
+      notes: [],
     };
   },
   computed: {
@@ -72,18 +73,11 @@ export default {
         },
         related: 'labels',
       };
-      if (this.$route.name === 'Label') {
-        const l = this.labels.filter(l => l.title === this.$route.params.labelName)[0];
-        const id = l && l._id;
-        params.conds = {
-          labels: id,
-        };
-      }
       return params;
     },
     ...mapGetters({
       dialog: 'components/dialog',
-      notes: 'notes/allNotes',
+      notesAll: 'notes/allNotes',
       labels: 'labels/all',
     }),
     settings() {
@@ -158,13 +152,24 @@ export default {
       }
       this.folded = isFold;
     },
+    getNotes() {
+      if (this.$route.name === 'Label') {
+        const labelName = this.$route.params.labelName;
+        return this.notesAll && this.notesAll.filter((note) => {
+          return note.labels.map(l => l && l.title).indexOf(labelName) >= 0;
+        });
+      }
+      return this.notesAll;
+    },
   },
   watch: {
     $route(to, from) {
-      console.log(to);
       if (to.name === 'Notes' || to.name === 'Label') {
-        this.queryNote(this.queryParams);
+        this.notes = this.getNotes();
       }
+    },
+    notesAll() {
+      this.notes = this.getNotes();
     },
   },
 };

@@ -80,6 +80,8 @@ menu {
   float: left;
   margin-top: 64px;
   width: 266px;
+  max-height: 100%;
+  overflow: auto;
 }
 .menu-section {
   padding: 8px 0;

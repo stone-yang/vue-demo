@@ -7,17 +7,20 @@
       @input="changeFormValues"
       @create="confirmCreate"
       @fold="foldCreatePane" />
-    <note-list-pane v-for="(note, idx) in notes" 
-      :note="note" :key="idx"
-      @edit="showEditForm"
-      @remove="removeNote({ id: note._id, params: queryParams })"
-      @changeColor="(c) => { retrieveFormValues(note); color = c; confirmEdit(); }"
-      @changeLabel="(label, isAdd) => { retrieveFormValues(note); confirmEditLabel(label, isAdd); }" />
+    <div class="note-list" ref="nList">
+      <note-list-pane v-for="(note, idx) in notes" 
+        :layout="contentLayout"
+        :note="note" :key="idx"
+        @edit="showEditForm"
+        @remove="removeNote({ id: note._id, params: queryParams })"
+        @changeColor="(c) => { retrieveFormValues(note); color = c; confirmEdit(); }"
+        @changeLabel="(label, isAdd) => { retrieveFormValues(note); confirmEditLabel(label, isAdd); }" />
+    </div>
 
     <!-- note edit dialog -->
     <app-dialog :show="dialog.editNote || false" @hide="dialog.editNote && closeDialog()"
       :actions="settings.dialog.actions" :color="color">
-      <div class="note-wrapper">
+      <div class="note-dialog-wrapper">
         <input type="text" placeholder="Title" class="note-title" v-model="title" />
         <textarea ref="noteContent" placeholder="Take a note..."
           class="note-content" v-model="content"></textarea>
@@ -76,6 +79,7 @@ export default {
       return params;
     },
     ...mapGetters({
+      contentLayout: 'components/contentLayout',
       dialog: 'components/dialog',
       notesAll: 'notes/allNotes',
       labels: 'labels/all',
@@ -161,6 +165,31 @@ export default {
       }
       return this.notesAll;
     },
+    adaptGridLayout: (function() {
+      let colHeights = [];
+      const interval = 16;
+      return function(ele) {
+        colHeights = new Array(3).fill(0);
+        Array.from(ele.children).forEach((item, idx) => {
+          const cIdx = idx % 3;
+          if (idx < 3) {
+            item.style.top = 0;
+          } else {
+            item.style.top = `${colHeights[cIdx]}px`;
+          }
+          // console.log(item.clientHeight, '----');
+          colHeights[idx % 3] += (item.clientHeight + interval);
+        });
+      };
+    })(),
+    adaptListLayout(ele) {
+      const interval = 16;
+      let h = 0;
+      Array.from(ele.children).forEach((item, idx) => {
+        item.style.top = `${h}px`;
+        h += (item.clientHeight + interval);
+      });
+    },
   },
   watch: {
     $route(to, from) {
@@ -171,12 +200,37 @@ export default {
     notesAll() {
       this.notes = this.getNotes();
     },
+    contentLayout() {
+      if (this.contentLayout === 0) {
+        this.$nextTick(() => {
+          this.adaptGridLayout(this.$refs.nList);
+        });
+      } else {
+        this.$nextTick(() => {
+          this.adaptListLayout(this.$refs.nList);
+        });
+      }
+    },
+    notes() {
+      if (this.contentLayout === 0) {
+        this.$nextTick(() => {
+          this.adaptGridLayout(this.$refs.nList);
+        });
+      } else {
+        this.$nextTick(() => {
+          this.adaptListLayout(this.$refs.nList);
+        });
+      }
+    },
   },
 };
 </script>
 
 <style lang='less' scoped>
-.note-wrapper {
+.note-list {
+  position: relative;
+}
+.note-dialog-wrapper {
   position: relative;
   // background-color: #fff;
   width: 100%;

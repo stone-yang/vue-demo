@@ -139,6 +139,7 @@ export default {
 }
 .icon-btn {
   display: inline-block;
+  width: 26px;
   height: 26px;
   padding: 0 4px;
   line-height: 26px;

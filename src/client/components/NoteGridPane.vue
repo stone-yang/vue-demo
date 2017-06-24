@@ -1,5 +1,5 @@
 <template>
-  <section class="note-wrapper" :class="`${layout === 0 ? 'grid' : 'list'}-view`"
+  <section class="note-grid-wrapper"
     :style="{ 'background-color': note.color }"
     @mouseenter="hover = true" @mouseleave="hover = false"
     @click="$emit('edit', note)">
@@ -28,14 +28,13 @@
 import NoteToolbar from '@/components/NoteToolbar';
 
 export default {
-  name: 'NoteListPane',
+  name: 'NoteGridPane',
   components: { NoteToolbar },
   props: {
     note: {
       type: Object,
       default: () => { labels: [] },
     },
-    layout: Number,
   },
   data() {
     return {
@@ -46,43 +45,20 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.note-wrapper {
-  position: absolute;
-  left: 0;
-  top: 0;
+.note-grid-wrapper {
+  position: relative;
   background-color: #fff;
+  width: 100%;
+  min-width: 600px;
   margin: 16px 0; 
   border-radius: 2px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 
     0 1px 5px 0 rgba(0,0,0,0.12);
-  &:not(:last-child) {
-    transition: background-color 0.4s ease-in;
-    // transition-property: top, background-color;
-  }
   .pane { 
     padding: 15px;
   }
   .pane-inner {
     margin-bottom: 15px;
-  }
-  &.list-view {
-    width: 100%;
-    min-width: 600px;
-  }
-  &.grid-view {
-    // position: absolute;
-    width: 248px;
-    margin-right: 16px;
-    &:nth-child(3n) {
-      left: 528px;
-    }
-    &:nth-child(3n + 1) {
-      left: 0;
-      margin-right: 0;
-    }
-    &:nth-child(3n + 2) {
-      left: 264px;
-    }
   }
 }
 .note-content {
@@ -99,7 +75,6 @@ export default {
     display: inline-block;
     min-width: 40px;
     margin-left: 4px;
-    margin-bottom: 4px;
     padding: 4px 9px;
     background-color: rgba(0,0,0,0.1);
     border-radius: 2px;

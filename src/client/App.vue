@@ -2,11 +2,12 @@
 <style src="mdi/css/materialdesignicons.min.css"></style>
 <template>
   <div id="app">
-    <topbar :themeColor="$route.meta.themeColor"
-      @toggleMenu="toggleMenu({ show: !mainMenu.show })"
+    <topbar :themeColor="$route.meta.themeColor" :layout="contentLayout"
+      @toggleMenu="toggleMenu({ show: !mainMenu })"
+      @switchLayout="switchLayout"
       @searchbarFocus="$router.push('/search')" />
-    <main-menu :show="mainMenu.show" @editLabel="openDialog({ name: 'editLabel' })" />
-    <section class="main-container" :class="{ 'left-menu': mainMenu.show }">
+    <main-menu :show="mainMenu" @editLabel="openDialog({ name: 'editLabel' })" />
+    <section class="main-container" :class="{ 'left-menu': mainMenu }">
       <router-view></router-view>
     </section>
   </div>
@@ -23,16 +24,18 @@ export default {
   computed: {
     ...mapGetters({
       mainMenu: 'components/mainMenu',
+      contentLayout: 'components/contentLayout',
     }),
   },
   methods: {
     ...mapMutations({
       toggleMenu: 'components/toggleMainMenu',
+      switchLayout: 'components/switchLayout',
     }),
   },
   // watch: {
-  //   $route(to, from) {
-  //     console.log(this.$route);
+  //   mainMenu() {
+  //     console.log(this.$store);
   //   },
   // },
 };

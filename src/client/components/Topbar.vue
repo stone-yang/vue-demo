@@ -19,14 +19,14 @@
     <div class="icon-btn refresh-icon">
       <i class="mdi mdi-refresh"></i>
     </div>
-    <div class="icon-btn">
+    <div class="icon-btn" v-show="layout === 1"
+      @click="$emit('switchLayout')">
+      <i class="mdi mdi-view-quilt"></i>
+    </div>
+    <div class="icon-btn" v-show="layout === 0"
+      @click="$emit('switchLayout')">
       <i class="mdi mdi-view-agenda"></i>
     </div>
-    <!-- 
-      <div class="icon-btn">
-        <i class="mdi mdi-view-quilt"></i>
-      </div>
-    -->
     <div class="icon-btn">
       <i class="mdi mdi-apps"></i>
     </div>
@@ -44,6 +44,7 @@ export default {
   name: 'Topbar',
   props: {
     themeColor: String,
+    layout: Number,
   },
 };
 </script>

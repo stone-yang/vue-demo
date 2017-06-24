@@ -14,25 +14,31 @@ const dialog = {
     },
   },
 };
+const state = {
+  showMainMenu: true,
+  contentLayout: 0,
+};
 
-const mainMenu = {
-  state: {
-    show: true,
+const getters = {
+  mainMenu: state => state.showMainMenu,
+  contentLayout: state => state.contentLayout,
+};
+
+const mutations = {
+  toggleMainMenu(state, { show }) {
+    state.showMainMenu = show;
   },
-  getters: { mainMenu: state => state },
-  mutations: {
-    toggleMainMenu(state, { show }) {
-      // const newState = Object.assign({}, state, { show });
-      // console.log(newState, 1111);
-      state.show = show;
-    },
+  switchLayout(state) {
+    state.contentLayout = state.contentLayout === 0 ? 1 : 0;
   },
 };
 
 export default {
   namespaced: true,
+  state,
+  mutations,
+  getters,
   modules: {
     dialog,
-    mainMenu,
   },
 };

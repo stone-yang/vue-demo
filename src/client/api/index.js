@@ -5,7 +5,7 @@ import globalConfig from '@global/config';
 // base settings
 axios.defaults.timeout = 5000;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://localhost:' + globalConfig.app.port + '/';
+// axios.defaults.baseURL = 'http://localhost:' + globalConfig.app.port + '/';
 axios.defaults.paramsSerializer = params => qs.stringify(params);
 
 // axios.interceptors.request.use((config) => {

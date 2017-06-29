@@ -18,24 +18,24 @@ const getters = {
 // actions
 const actions = {
   query: async ({ commit }, params) => {
-    const { data } = await axios.get('/api/note/query', { params });
+    const { data } = await axios.get('/api/notes', { params });
     commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
   create: async ({ commit }, { note, params }) => {
-    const { data } = await axios.post('/api/note/create', note, { params });
+    const { data } = await axios.post('/api/notes', note, { params });
     commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
   edit: async ({ commit }, { id, note, params }) => {
     console.log(note);
-    const { data } = await axios.put(`/api/note/edit/${id}`, note, { params });
+    const { data } = await axios.put(`/api/notes/${id}`, note, { params });
     commit(MUTYPES.NOTES.UPDATE_ALL, { $list: data });
   },
   remove: async ({ commit }, { id, params }) => {
-    await axios.delete(`/api/note/remove/${id}`, { params });
+    await axios.delete(`/api/notes/${id}`, { params });
     commit(MUTYPES.NOTES.REMOVE, { id });
   },
   editLabel: async ({ commit }, { id, body }) => {
-    const { data } = await axios.put(`/api/note/editLabel/${id}`, body);
+    const { data } = await axios.put(`/api/notes/${id}/editLabel`, body);
     commit(MUTYPES.NOTES.UPDATE_ONE, data[0]);
     return data[0];
   },

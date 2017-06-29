@@ -17,9 +17,9 @@ export default (app) => {
    * @return {Object} stats - statistics information
    * @throws {Object} error
    * @example
-   *   /api/note/query
+   *   /api/note
    */
-  router.get('/api/note/query', commonCtrl.getList('NoteDetail'));
+  router.get('/api/notes', commonCtrl.getList('NoteDetail'));
   /**
    * {Note} - create note
    * @body   {Object}  data - new note info
@@ -30,14 +30,14 @@ export default (app) => {
    * @example
    *   /api/note/create
    */
-  router.post('/api/note/create', commonCtrl.create('NoteDetail'));
-  router.put('/api/note/edit/:id', commonCtrl.edit('NoteDetail'));
-  router.del('/api/note/remove/:id', commonCtrl.remove('NoteDetail'));
-  router.put('/api/note/editLabel/:id', noteCtrl.editLabel);
-  router.get('/api/label/query', commonCtrl.getList('Label'));
-  router.post('/api/label/create', commonCtrl.create('Label'));
-  router.put('/api/label/edit/:id', commonCtrl.edit('Label'));
-  router.del('/api/label/remove/:id', commonCtrl.remove('Label'));
+  router.post('/api/notes', commonCtrl.create('NoteDetail'));
+  router.put('/api/notes/:id', commonCtrl.edit('NoteDetail'));
+  router.del('/api/notes/:id', commonCtrl.remove('NoteDetail'));
+  router.put('/api/notes/:id/editLabel', noteCtrl.editLabel);
+  router.get('/api/labels', commonCtrl.getList('Label'));
+  router.post('/api/labels', commonCtrl.create('Label'));
+  router.put('/api/labels/:id', commonCtrl.edit('Label'));
+  router.del('/api/labels/:id', commonCtrl.remove('Label'));
 
   app
     .use(router.routes())

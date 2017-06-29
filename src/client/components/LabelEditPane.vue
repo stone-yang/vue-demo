@@ -113,15 +113,14 @@ export default {
 
 <style lang='less' scoped>
 .label-edit-pane {
-  width: 280px;
+  // width: 280px;
   max-height: 240px;
-  padding: 20px 0;
+  padding: 20px;
   margin-bottom: 28px;
   border-bottom: 1px solid #ddd;
   overflow: auto;
   .label-row {
     margin: 10px 0;
-    text-align: center;
     // margin: 0 auto;
   }
 }

@@ -18,19 +18,19 @@ const getters = {
 // actions
 const actions = {
   query: async ({ commit }, params) => {
-    const { data } = await axios.get('/api/label/query', { params });
+    const { data } = await axios.get('/api/labels', { params });
     commit(MUTYPES.LABEL.UPDATE_ALL, { $list: data });
   },
   create: async ({ commit }, { body, params }) => {
-    const { data } = await axios.post('/api/label/create', body, { params });
+    const { data } = await axios.post('/api/labels', body, { params });
     commit(MUTYPES.LABEL.UPDATE_ALL, { $list: data });
   },
   edit: async ({ commit }, { id, body, params }) => {
-    const { data } = await axios.put(`/api/label/edit/${id}`, body, { params });
+    const { data } = await axios.put(`/api/labels/${id}`, body, { params });
     commit(MUTYPES.LABEL.UPDATE_ALL, { $list: data });
   },
   remove: async ({ commit }, { id, params }) => {
-    const { data } = await axios.delete(`/api/label/remove/${id}`, { params });
+    const { data } = await axios.delete(`/api/labels/${id}`, { params });
     commit(MUTYPES.LABEL.UPDATE_ALL, { $list: data });
   },
 };

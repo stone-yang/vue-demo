@@ -13,7 +13,8 @@ module.exports = {
   extends: 'airbnb-base',
   // required to lint *.vue files
   plugins: [
-    'html'
+    'html',
+    'vue/base'
   ],
   // check if imports actually resolve
   'settings': {
@@ -56,5 +57,7 @@ module.exports = {
     'arrow-body-style': 0,
     // warn for unlisted project's dependencies
     'import/no-extraneous-dependencies': process.env.NODE_ENV === 'production' ? 0 : 1,
+    // allow self-closing tags
+    'vue/html-no-self-closing': 0,
   }
 }

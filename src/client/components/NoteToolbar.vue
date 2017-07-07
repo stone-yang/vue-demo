@@ -7,7 +7,7 @@
         <color-pane :activeColor="note && note.color" :show="cHover"
           @changeColor="(color) => $emit('changeColor', color)" />
       </li>
-      <li class="icon-btn" v-if="opType === 0">
+      <li class="icon-btn disabled" v-if="opType === 0">
         <i class="mdi mdi-image"></i>
       </li>
       <li class="icon-btn" @click.stop="lShow = true; toolbarShow = true">
@@ -84,7 +84,10 @@ export default {
   font-size: 1.125rem;
   border-radius: 50%;
   cursor: pointer;
-  &:hover {
+  &.disabled {
+    cursor: default;
+  }
+  &:hover:not(.disabled) {
     color: #221900;
   }
 }

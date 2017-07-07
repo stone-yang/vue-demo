@@ -21,10 +21,10 @@
           @click="() => { $emit('create'); cColor = ''; }">DONE</button>
       </div>
     </div>
-    <div class="icon-btn image" v-show="folded">
+    <div class="icon-btn image disabled" v-show="folded">
       <i class="mdi mdi-image"></i>
     </div>
-    <div class="icon-btn list" v-show="folded">
+    <div class="icon-btn list disabled" v-show="folded">
       <i class="mdi mdi-format-list-checks"></i>
     </div>
     <div class="clear"></div>
@@ -121,8 +121,11 @@ export default {
   font-size: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
-  &:hover {
+  &:hover:not(.disabled) {
     color: #221900;
+  }
+  &.disabled {
+    cursor: default;
   }
   @media screen and (max-device-width: 500px) {
     display: none;

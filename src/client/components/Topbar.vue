@@ -20,7 +20,7 @@
       <i class="mdi mdi-account"></i>
     </div>
     <div class="tools-bar-fullwidth">
-      <div class="icon-btn refresh-icon">
+      <div class="icon-btn refresh-icon disabled">
         <i class="mdi mdi-refresh"></i>
       </div>
       <div class="icon-btn" v-show="layout === 1"
@@ -31,10 +31,10 @@
         @click="$emit('switchLayout')">
         <i class="mdi mdi-view-agenda"></i>
       </div>
-      <div class="icon-btn">
+      <div class="icon-btn disabled">
         <i class="mdi mdi-apps"></i>
       </div>
-      <div class="icon-btn">
+      <div class="icon-btn disabled">
         <i class="mdi mdi-bell"></i>
       </div>
     </div>
@@ -114,6 +114,10 @@ export default {
   font-size: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+  }
 }
 .top-title {
   // font-family: 'Roboto', 'RobotoDraft', Arial, sans-serif;
@@ -126,7 +130,7 @@ export default {
 .theme-yellow {
   background-color: @theme-color-yellow;
   color: #765700;
-  .icon-btn:hover {
+  .icon-btn:hover:not(.disabled) {
     color: #221900;
   }
   .search-bar {

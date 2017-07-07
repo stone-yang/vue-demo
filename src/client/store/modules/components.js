@@ -1,5 +1,25 @@
 import Vue from 'vue';
 
+const device = {
+  state: {
+    screenWidth: 0,
+    deviceWidth: 0,
+    isMobile: false,
+  },
+  getters: {
+    screenWidth: state => state.screenWidth,
+    deviceWidth: state => state.deviceWidth,
+    isMobile: state => state.isMobile,
+  },
+  mutations: {
+    setDeviceState(state, { screenWidth, deviceWidth, isMobile }) {
+      state.screenWidth = screenWidth || state.screenWidth;
+      state.deviceWidth = deviceWidth || state.deviceWidth;
+      state.isMobile = isMobile || state.isMobile;
+    },
+  },
+};
+
 const dialog = {
   state: {},
   getters: { dialog: state => state },
@@ -16,7 +36,7 @@ const dialog = {
 };
 const state = {
   showMainMenu: true,
-  contentLayout: 0,
+  contentLayout: 0, // 0 - grid view; 1 - list view
 };
 
 const getters = {
@@ -28,8 +48,9 @@ const mutations = {
   toggleMainMenu(state, { show }) {
     state.showMainMenu = show;
   },
-  switchLayout(state) {
-    state.contentLayout = state.contentLayout === 0 ? 1 : 0;
+  switchLayout(state, mode) {
+    const layoutStatus = mode || state.contentLayout === 0 ? 1 : 0;
+    state.contentLayout = layoutStatus;
   },
 };
 
@@ -40,5 +61,6 @@ export default {
   getters,
   modules: {
     dialog,
+    device,
   },
 };

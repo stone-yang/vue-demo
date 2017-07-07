@@ -21,12 +21,13 @@
     <app-dialog :show="dialog.editNote || false" @hide="dialog.editNote && closeDialog()"
       :actions="settings.dialog.actions" :color="color">
       <div class="note-dialog-wrapper">
-        <input type="text" placeholder="Title" class="note-title" v-model="title" />
+        <input type="text" placeholder="Title" class="note-title" :class="{ 'mobile-input': isMobile }"
+          v-model="title" />
         <textarea ref="noteContent" placeholder="Take a note..."
-          class="note-content" v-model="content"></textarea>
+          class="note-content" :class="{ 'mobile-input': isMobile }" v-model="content"></textarea>
       </div>
       <div class="note-labels">
-        <li class="list-item" v-for="label in note && note.labels">{{ label.title }}</li>
+        <li class="list-item" :key="idx" v-for="(label, idx) in note && note.labels">{{ label.title }}</li>
       </div>
       <note-toolbar :note="note" :show="true" :opType="1" @remove="confirmRemove"
         @changeColor="(c) => { color = c; confirmEdit(); }"
@@ -81,6 +82,7 @@ export default {
     ...mapGetters({
       contentLayout: 'components/contentLayout',
       dialog: 'components/dialog',
+      isMobile: 'components/isMobile',
       notesAll: 'notes/allNotes',
       labels: 'labels/all',
     }),
@@ -183,7 +185,7 @@ export default {
       };
     })(),
     adaptListLayout(ele) {
-      const interval = 16;
+      const interval = screen.width < 500 ? 36 : 16;
       let h = 0;
       Array.from(ele.children).forEach((item, idx) => {
         item.style.top = `${h}px`;
@@ -211,7 +213,7 @@ export default {
         });
       }
     },
-    notes() {
+    notes() {     
       if (this.contentLayout === 0) {
         this.$nextTick(() => {
           this.adaptGridLayout(this.$refs.nList);
@@ -234,29 +236,37 @@ export default {
   position: relative;
   // background-color: #fff;
   width: 100%;
-  min-width: 600px;
-  border-radius: 2px;
+  width: 37.5rem;
+  border-radius: 0.14rem;
+  .mobile-width;
 }
 .note-content {
   width: 100%;
-  margin-top: 20px;
-  min-height: 60px;
-  font-size: 14px;
+  margin-top: 1.25rem;
+  min-height: 3.75rem;
+  font-size: .875rem;
 }
 .note-title {
   font-weight: bold;
 }
 .note-labels {
   text-align: right;
+  .mobile-width;
   .list-item {
     display: inline-block;
-    min-width: 40px;
-    margin-left: 4px;
-    padding: 4px 9px;
+    min-width: 2.5rem;
+    margin-left: .25rem;
+    margin-bottom: .25rem;
+    padding: .25rem .55rem;
     background-color: rgba(0,0,0,0.1);
-    border-radius: 2px;
-    font-size: 12px;
+    border-radius: .14rem;
+    font-size: .75rem;
     font-weight: bold;
+  }
+}
+.mobile-width {
+  @media screen and (max-device-width: 500px) {
+    width: 22rem;
   }
 }
 </style>

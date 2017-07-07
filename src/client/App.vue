@@ -21,41 +21,60 @@ import MainMenu from '@/components/MainMenu';
 export default {
   name: 'app',
   components: { Topbar, MainMenu },
+  created() {
+    window.addEventListener('resize', this.resize);
+
+    // attrieve device status
+    const ds = {
+      screenWidth: window.innerWidth, 
+      deviceWidth: screen.width,
+    };
+    if (screen.width < 500) {
+      this.toggleMenu({ show: false });
+      this.switchLayout(1);
+      ds.isMobile = true;
+    }
+    this.setDeviceState(ds);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.resize);
+  },
   computed: {
     ...mapGetters({
       mainMenu: 'components/mainMenu',
       contentLayout: 'components/contentLayout',
     }),
   },
+  
   methods: {
     ...mapMutations({
       toggleMenu: 'components/toggleMainMenu',
       switchLayout: 'components/switchLayout',
+      setDeviceState: 'components/setDeviceState',
     }),
+    resize() {
+      console.log('resize', window.innerWidth);
+      const w = window.innerWidth;
+      const W_MENU = 1160;
+      const W_LAYOUT = 900;
+      if (w < W_MENU) {
+        this.toggleMenu({ show: false });
+      }
+      if (w >= W_MENU) {
+        this.toggleMenu({ show: true });
+      }
+      if (w < W_LAYOUT) {
+        this.switchLayout(1);
+      }
+    },
   },
-  // watch: {
-  //   mainMenu() {
-  //     console.log(this.$store);
-  //   },
-  // },
 };
 </script>
-
+<style lang='less' src="./styles/main.less"></style>
 <style lang='less'>
-@import './styles/main.less';
+@import './styles/consts.less';
 #app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
   height: 100%;
-  background-color: #e2e2e2;
-  color: @font-color-default;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-}
-.main-container {
-  padding: 24px 48px;
-  padding-top: 64px;
-  &.left-menu {
-    margin-left: @menu-width;
-  }
 }
 </style>

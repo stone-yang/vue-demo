@@ -66,3 +66,51 @@ export default {
   },
 };
 </script>
+
+<style lang='less' scoped>
+.dialog-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+}
+.dialog-shade {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5e5;
+  opacity: .75;
+  cursor: pointer;
+}
+.dialog-win {
+  position: absolute;
+  z-index: 1005;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  border-style: none;
+  border-radius: .125rem;
+  box-shadow: 0 .14rem .14rem 0 rgba(0,0,0,0.14), 0 .2rem .06rem -.14rem rgba(0,0,0,0.2), 
+    0 .06rem .3rem 0 rgba(0,0,0,0.12);
+  background: #fff;
+  .title {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+}
+.dialog-buttons {
+  position: absolute;
+  bottom: .875rem;
+  right: .875rem;
+  font-size: .875rem;
+  font-weight: bold;
+  button {
+    margin-left: .5rem;
+    border-radius: .14rem;
+    &:hover {
+      background-color: rgba(0,0,0,0.1);
+    }
+  }
+}
+</style>

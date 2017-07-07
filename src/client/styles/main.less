@@ -1,19 +1,17 @@
-/** define color variables **/
-@theme-color-yellow: #fb0;
-@theme-color-cerulean: #607d8b;
-@theme-color-dark-blue: #3e50b4;
-@font-color-default: #2c3e50;
-
-/** define layout variables **/
-@menu-width: 266px;
+@import './consts.less';
 
 /** base **/
 * { box-sizing: border-box; }
-html { height: 100%; }
+html { 
+  height: 100%;
+  font-size: 16px; 
+}
 body {
   position: relative;
-  min-height: 100%;
+  height: 100%;
   background-color: #e2e2e2;
+  color: @font-color-default;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 a { color: inherit; text-decoration: none; cursor: pointer; }
 dl, menu, ol, ul { margin:0; padding:0; }
@@ -32,60 +30,59 @@ input:focus {
 }
 textarea { resize: none; }
 .clear { clear: both }
-.content-view {
-  position: relative;
-  width: 784px;
-  margin: 0 auto;
-}
 .hide { display: none }
 
-/** dialog **/
-.dialog-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  width: 100%;
+/** page layout **/
+
+.main-container {
   height: 100%;
+  padding: 1.5rem;
+  padding-top: 4rem;
+  transition: margin-left 0.4s ease-in;
 }
-.dialog-shade {
-  width: 100%;
-  height: 100%;
-  background-color: #e5e5e5;
-  opacity: .75;
-}
-.dialog-win {
-  position: absolute;
-  z-index: 1005;
-  top: 0;
-  left: 0;
-  padding: 16px;
-  border-style: none;
-  border-radius: 2px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 
-    0 1px 5px 0 rgba(0,0,0,0.12);
-  background: #fff;
-  .title {
-    font-size: 18px;
-    font-weight: 500;
-  }
-}
-.dialog-buttons {
-  position: absolute;
-  bottom: 14px;
-  right: 14px;
-  font-size: 14px;
-  font-weight: bold;
-  button {
-    margin-left: 8px;
-    border-radius: 2px;
-    &:hover {
-      background-color: rgba(0,0,0,0.1);
-    }
-  }
+
+.content-view {
+  position: relative;
+  max-width: 49rem;
+  margin: 0 auto;
 }
 
 /** responsive layout **/
-@media screen and (min-width: 768px) and (max-width: 959px) {
-    #page{ width: 900px; }#content,.div1{width: 620px;}#secondary{width:220px}select{max-width:180px}
+
+.mobile-input {
+  font-size: 1.1rem !important;
+}
+
+/** for topbar & main menu **/
+@media screen and (min-width: 1180px) {
+  // .topbar > .tools-bar-short {
+  //   display: none !important;
+  // }
+  .main-container.left-menu {
+    margin-left: @menu-width;
+  }
+  menu.main-menu {
+    box-shadow: none;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .topbar > .tools-bar-fullwidth {
+    display: none !important;
+  }
+  .topbar > .search-bar {
+    display: none !important;
+  }
+}
+
+@media screen and (max-device-width: 500px) {
+  html {
+    font-size: 38px;
+  }
+  .topbar > .tools-bar-fullwidth {
+    display: none !important;
+  }
+  .topbar > .search-bar {
+    display: none !important;
+  }
 }

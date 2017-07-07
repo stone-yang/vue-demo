@@ -7,13 +7,13 @@
       <div class="pane-inner" v-show="!folded">
         <!-- note title -->
         <input type="text" placeholder="Title" class="note-title"
-          :value="values.title"
+          :value="values.title" :class="{ 'mobile-input': isMobile }"
           @input="$emit('input', 'title', $event.target.value)" />
         <!-- note content -->
         <textarea ref="noteContent" placeholder="Take a note..."
           :value="values.content"
           @input="$emit('input', 'content', $event.target.value)"
-          class="note-content"></textarea>
+          class="note-content" :class="{ 'mobile-input': isMobile }"></textarea>
         <!-- note toolbar -->
         <note-toolbar :opType="0" :show="true"
           @changeColor="(color) => { cColor = color; $emit('input', 'color', color); }" />
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NoteToolbar from '@/components/NoteToolbar';
 
 export default {
@@ -48,6 +49,11 @@ export default {
   },
   beforeDestroy() {
     document.body.removeEventListener('click', this.foldPane);
+  },
+  computed: {
+    ...mapGetters({
+      isMobile: 'components/isMobile',
+    }),
   },
   methods: {
     foldPane() {
@@ -73,50 +79,53 @@ export default {
   background-color: #fff;
   width: 100%;
   // min-width: 600px;
-  margin: 16px 0; 
-  border-radius: 2px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 
-    0 1px 5px 0 rgba(0,0,0,0.12);
+  margin: 1rem 0; 
+  border-radius: .14rem;
+  box-shadow: 0 .14rem .14rem 0 rgba(0,0,0,0.14), 0 .2rem .06rem -.14rem rgba(0,0,0,0.2), 
+    0 .06rem .3rem 0 rgba(0,0,0,0.12);
   &.folded {
-    height: 48px;
+    height: 3rem;
   }
   .pane { 
     width: 75%;
-    padding: 15px;
+    padding: 1rem;
     float: left; 
     .pane-op-button {
       position: absolute;
-      right: 15px;
-      bottom: 15px;
-      font-size: 14px;
+      right: 1rem;
+      bottom: 1rem;
+      font-size: .875rem;
       font-weight: bold;
     }
   }
 }
 .note-input {
   width: 100%;
-  font-size: 14px;
+  font-size: .875rem;
 }
 .note-content {
   width: 100%;
-  min-height: 60px;
-  margin-top: 20px;
-  font-size: 14px;
+  min-height: 3.75rem;
+  margin-top: 1.25rem;
+  font-size: .875rem;
 }
 .note-title {
   font-weight: bold;
 }
 .icon-btn {
   float: right;
-  height: 48px;
-  padding: 0 18px;
-  line-height: 48px;
+  height: 3rem;
+  padding: 0 1.125rem;
+  line-height: 3rem;
   color: #6b6b6b;
-  font-size: 24px;
+  font-size: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
   &:hover {
     color: #221900;
+  }
+  @media screen and (max-device-width: 500px) {
+    display: none;
   }
 }
 </style>

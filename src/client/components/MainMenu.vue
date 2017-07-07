@@ -1,5 +1,5 @@
 <template>
-  <menu v-show="show">
+  <menu class="main-menu" :class="{ 'show': show }">
     <ul class="menu-section">
       <li class="menu-item">
         <router-link to="/notes">
@@ -13,7 +13,7 @@
         Lables
         <button type="button" class="menu-item-text" @click.stop="openDialog({ name: 'editLabel' })">EDIT</button>
       </li>
-      <li class="menu-item" v-for="label in labels">
+      <li class="menu-item" v-for="(label, idx) in labels" :key="idx">
         <router-link :to="`/label/${label.title}`">
           <i class="mdi mdi-label"></i>
           <span class="menu-item-text">{{ label.title }}</span>
@@ -73,40 +73,48 @@ export default {
 };
 </script>
 
-<style lang='less' scoped>
-@import '../styles/main.less';
-menu {
+<style lang='less'>
+@import '../styles/consts.less';
+.main-menu {
   position: fixed;
-  float: left;
-  margin-top: 64px;
-  width: 266px;
-  max-height: 100%;
+  // float: left;
+  left: calc(-@menu-width - 2);
+  margin-top: 4rem;
+  width: @menu-width;
+  min-height: 100%;
   overflow: auto;
+  z-index: 1000;
+  background-color: #e2e2e2;
+  box-shadow: 0 .4rem .4rem 0 rgba(0,0,0,0.3);
+  transition: left 0.4s ease-in;
+  &.show {
+    left: 0;
+  }
 }
 .menu-section {
-  padding: 8px 0;
+  padding: .5rem 0;
 }
 .menu-section + .menu-section {
-  border-top: #ccc 1px solid;
+  border-top: #ccc .07rem solid;
 }
-.menu-item {
-  width: 264px;
-  height: 48px;
-  padding: 4px 0 4px 22px;
-  line-height: 40px;
+.main-menu .menu-item {
+  width: 16.4rem;
+  height: 3rem;
+  padding: .25rem 0 .25rem 1.4rem;
+  line-height: 2.5rem;
   color: #6b6b6b;
   font-family: 'Roboto', 'RobotoDraft', Arial, sans-serif;
-  font-size: 14px;
+  font-size: .875rem;
   .mdi {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   &.title {
-    padding-right: 22px;
+    padding-right: 1.375rem;
     color: @font-color-default;
     font-weight: bold;
     .menu-item-text {
       float: right;
-      padding: 0 16px;
+      padding: 0 1rem;
       font-weight: bold;
     }
   }
@@ -117,19 +125,22 @@ menu {
   &:hover {
     background-color: rgba(0, 0, 0, 0.03);
   }
+  .menu-item-text {
+    display: inline-block;
+    vertical-align: top;
+    height: 2.5rem;
+    padding-left: 2rem;
+    line-height: 2.5rem;
+  }
 }
-.menu-item-text {
-  display: inline-block;
-  vertical-align: top;
-  height: 40px;
-  padding-left: 32px;
-  line-height: 40px;
-}
+</style>
+
+<style lang='less' scoped>
 .icon-btn {
   display: inline-block;
-  padding: 10px 12px;
+  padding: .6rem .75rem;
   color: #765700;
-  font-size: 24px;
+  font-size: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
   &:hover {

@@ -56,29 +56,32 @@ export default {
 @import '../styles/main.less';
 .label-pane {
   position: absolute;
-  left: 14px;
+  left: .875rem;
   bottom: 100%;
-  max-height: 150px;
+  max-height: 9.4rem;
   overflow: auto;
-  padding: 6px 0;
+  padding: .4rem 0;
   background-color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 
-    0 1px 5px 0 rgba(0,0,0,0.12);
+  box-shadow: 0 .14rem .14rem 0 rgba(0,0,0,0.14), 0 .2rem .06rem -.14rem rgba(0,0,0,0.2), 
+    0 .06rem .3rem 0 rgba(0,0,0,0.12);
 }
 .menu-item {
   position: relative;
-  width: 225px;
-  height: 30px;
-  padding: 5px 10px 3px;
-  line-height: 22px;
+  width: 14rem;
+  height: 1.875rem;
+  padding: .3rem .6rem .2rem;
+  line-height: 1.375rem;
   color: #6b6b6b;
   font-family: 'Roboto', 'RobotoDraft', Arial, sans-serif;
-  font-size: 12px;
+  font-size: .75rem;
   &:hover {
     background-color: #eee;
   }
   .menu-item-text {
-    padding-left: 24px;
+    padding-left: 1.5rem;
+  }
+  .checkbox .mdi {
+    font-size: 1rem;
   }
 }
 .checkbox {
@@ -87,14 +90,13 @@ export default {
   bottom: 0;
   margin: auto;
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  line-height: 14px;
+  width: 1rem;
+  height: 1rem;
+  line-height: .875rem;
   color: #fff;
-  font-size: 12px;
   text-align: center;
-  border: 1px solid #767676;
-  border-radius: 2px;
+  border: .07rem solid #767676;
+  border-radius: .14rem;
   &.active {
     background-color: #767676;
   }

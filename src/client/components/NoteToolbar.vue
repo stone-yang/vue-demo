@@ -72,16 +72,16 @@ export default {
 .toolbar-wrapper {
   display: inline-block;
   vertical-align: bottom;
-  margin-left: -10px;
+  margin-left: -.625rem;
 }
 .icon-btn {
   position: relative;
   float: left;
-  height: 24px;
-  padding: 0 14px;
-  line-height: 24px;
+  height: 1.5rem;
+  padding: 0 .875rem;
+  line-height: 1.5rem;
   color: #6b6b6b;
-  font-size: 18px;
+  font-size: 1.125rem;
   border-radius: 50%;
   cursor: pointer;
   &:hover {

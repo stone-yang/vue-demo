@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const NoteDetail = mongoose.model('NoteDetail');
 const Label = mongoose.model('Label');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 async function attachLabel(noteId, labelId, isAdd) {
   if (isAdd) {

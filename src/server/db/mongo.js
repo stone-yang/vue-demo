@@ -3,6 +3,7 @@ import fs from 'fs';
 
 import globalConfig from '@global/config';
 import getSchema from './getSchema';
+import loadMiddlewares from './middleware';
 
 /**
  * Connect to database
@@ -27,6 +28,7 @@ fs.readdirSync(globalConfig.app.modelsPath)
     const model = require(`@models/${file}`).default;
     const schema = getSchema(model);
     const modelName = file.replace(/\.js/, '');
+    loadMiddlewares(modelName, schema)
 
     mongoose.model(modelName, schema);
   });

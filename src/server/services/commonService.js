@@ -65,7 +65,8 @@ async function edit(modelName, id, body) {
 }
 
 async function remove(modelName, id) {
-  const dbRes = await mongoose.model(modelName).deleteOne({ _id: id });
+  const doc = await mongoose.model(modelName).findOne({ _id: id });
+  const dbRes = await doc.remove();
   return dbRes;
 }
 

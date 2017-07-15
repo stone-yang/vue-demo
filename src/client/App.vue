@@ -53,14 +53,13 @@ export default {
       setDeviceState: 'components/setDeviceState',
     }),
     resize() {
-      console.log('resize', window.innerWidth);
       const w = window.innerWidth;
       const W_MENU = 1160;
       const W_LAYOUT = 900;
-      if (w < W_MENU) {
+      if (w < W_MENU && this.mainMenu) {
         this.toggleMenu({ show: false });
       }
-      if (w >= W_MENU) {
+      if (w >= W_MENU && !this.mainMenu) {
         this.toggleMenu({ show: true });
       }
       if (w < W_LAYOUT) {

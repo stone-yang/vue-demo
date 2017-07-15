@@ -64,7 +64,7 @@ const webpackConfig = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
   ],
   node: {
 		__filename: true,

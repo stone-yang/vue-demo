@@ -179,9 +179,11 @@ export default {
           } else {
             item.style.top = `${colHeights[cIdx]}px`;
           }
-          // console.log(item.clientHeight, '----');
           colHeights[idx % 3] += (item.clientHeight + interval);
         });
+        const listHeight = Math.max(...colHeights) + interval;
+        // adjust body height according to note list layout
+        this._adjustBodyHeight(listHeight);
       };
     })(),
     adaptListLayout(ele) {
@@ -191,11 +193,22 @@ export default {
         item.style.top = `${h}px`;
         h += (item.clientHeight + interval);
       });
+      this._adjustBodyHeight(h);
+    },
+    _adjustBodyHeight(listHeight) {
+      const bodyEl = document.body;
+      const mainContainerEl = document.querySelector('.main-container');
+      this.$refs.nList.style.height = `${listHeight}px`;
+      const containerHeight = mainContainerEl.clientHeight;
+      if (containerHeight > bodyEl.clientHeight) {
+        document.body.style.height = `${containerHeight}px`;
+      }
     },
   },
   watch: {
     $route(to, from) {
       if (to.name === 'Notes' || to.name === 'Label') {
+        window.scrollTo(0, 0);
         this.notes = this.getNotes();
       }
     },
@@ -247,6 +260,7 @@ export default {
   font-size: .875rem;
 }
 .note-title {
+  width: 100%;
   font-weight: bold;
 }
 .note-labels {

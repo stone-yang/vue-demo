@@ -5,9 +5,11 @@ const { mongoConnect } = require('../src/server/db/mongo');
 
 const DUMP_DIR = path.resolve(__dirname, 'mongodump');
 
-// clear database
 mongoConnect().then((connection) => {
+  // clear database
   connection.db.dropDatabase();
+
+  // restore dump data
   const initProcess = spawn('mongorestore', ['-dnoteskeep', `--dir=${DUMP_DIR}`]);
   initProcess.stdout.on('data', (data) => process.stdout.write(data));
   initProcess.stderr.on('data', (data) => process.stderr.write(data));

@@ -9,6 +9,7 @@
     "hot-server": "webpack --config build/webpack.server.conf.js --watch",
     "dev": "NODE_ENV=development node build/node-hot-dev.js",
     "start": "babel-node dist/server.js",
+    "db-init": "babel-node db/init",
     "build": "NODE_ENV=production node build/build.js",
     "prod": "NODE_ENV=production node dist/server.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",

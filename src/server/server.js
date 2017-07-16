@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
  */
 import globalConfig from '@global/config';
 import koaConfig from './middlewares/koa';
-import mongoConfig from './db/mongo';
+import mongoConnect from './db/mongoConnect';
 import routeConfig from './middlewares/routes';
 
 /**
@@ -24,6 +24,10 @@ if (globalConfig.app.env === 'development') {
   const frontDevMiddlewareConfig = require('./middlewares/front-dev-middleware').default;
   frontDevMiddlewareConfig(app);
 }
+
+/**
+ * koa server config
+ */
 koaConfig(app);
 
 /**

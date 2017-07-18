@@ -9,7 +9,9 @@
       </div>
       <div class="dialog-buttons">
         <button type="button" v-for="(action, idx) in actions" v-if="action.handler"
-          :key="idx" @click="action.handler">{{action.name}}</button>
+          :key="idx" @click="action.handler">
+          {{action.name}}
+        </button>
       </div>
     </dialog>
     <div class="dialog-shade" ref="dias"></div>
@@ -21,7 +23,22 @@ export default {
   name: 'Dialog',
   props: {
     show: Boolean,
-    actions: Array,
+    actions: {
+      type: Array,
+      default: () => [],
+      validator: (value) => {
+        if (value && !Array.isArray(value)) {
+          return false;
+        }
+        if (Array.isArray(value)) {
+          value.forEach((action) => {
+            if (action.handler || typeof action.handler !== 'function') {
+              return false;
+            }
+          });
+        }
+      },
+    },
     title: String,
     color: String,
   },

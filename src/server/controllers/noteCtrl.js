@@ -4,6 +4,11 @@ import commonService from '@server/services/commonService';
 
 const NoteDetail = mongoose.model('NoteDetail');
 
+/**
+ * edit a label which is attached to a note 修改note关联的label
+ * @body {String} label - label id
+ * @body {Bealoon} isAdd - true: add label  false: remove label
+ */
 async function editLabel(ctx, next) {
   const noteId = ctx.params.id;
   const labelId = ctx.request.body.label;

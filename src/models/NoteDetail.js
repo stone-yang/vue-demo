@@ -16,13 +16,12 @@ const NoteDetail = {
   content: {
     code: 'content',
     type: String,
-    // required: [true, 'Note content is required.'],
+    required: [true, 'Note content is required.'],
   },
 
   color: {
     code: 'color',
     type: Object,
-    // ref: 'ExpenseInfo',
   },
 
   labels: {

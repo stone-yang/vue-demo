@@ -1,6 +1,10 @@
 import commonService from '@server/services/commonService';
 import qs from 'qs';
 
+/**
+ * query data from model
+ * @param {String} modelName a model which was registered
+ */
 function getList(modelName) {
   return async function (ctx, next) {
     const { conds = {}, orders = null, ranges = null, related = null } = qs.parse(ctx.query);
@@ -10,6 +14,10 @@ function getList(modelName) {
   };
 }
 
+/**
+ * create an object at model
+ * @param {String} modelName a model which was registered
+ */
 function create(modelName) {
   return async function (ctx, next) {
     const createBody = ctx.request.body;
@@ -21,6 +29,10 @@ function create(modelName) {
   };
 }
 
+/**
+ * edit an object which was previously created at a model
+ * @param {String} modelName a model which was registered
+ */
 function edit(modelName) {
   return async function (ctx, next) {
     const id = ctx.params.id;
@@ -33,6 +45,10 @@ function edit(modelName) {
   };
 }
 
+/**
+ * remove an object which was previously created at a model
+ * @param {String} modelName a model which was registered
+ */
 function remove(modelName) {
   return async function remove(ctx, next) {
     const id = ctx.params.id;

@@ -56,13 +56,17 @@ npm run build
 npm run prod
 ```
 ## 预览 Preview
+
 **PC端视图**
-
-![PC Preview 01](https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-01.png) 
-
-![PC Preview 01](https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-02.png) 
+<div align = center>
+<img src="https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-01.png" width="75%">
+</div>
+<br/>
+<div align = center>
+<img src="https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-02.png" width="75%">
+</div>
 
 **移动端视图**
 <div align = center>
-<img src="https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/mobile-view.png" width="50%">
+<img src="https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/mobile-view.png" width="40%">
 </div>

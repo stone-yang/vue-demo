@@ -26,10 +26,11 @@
 ## 运行方式 Build Setup
 
 **安装配置 Install Mongodb**   
+
 安装指导 instruction <https://docs.mongodb.com/manual/administration/install-community/>  
 在项目目录下的`config/index.js`文件找到mongodb配置并修改
 
-```
+``` javascript
 // find config/index.js and set mongodb connection url
 mongo: { 
   url: 'mongodb://' + MONGO_HOST + ':27017/noteskeep', 
@@ -55,4 +56,13 @@ npm run build
 npm run prod
 ```
 ## 预览 Preview
+**PC端视图**
 
+![PC Preview 01](https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-01.png) 
+
+![PC Preview 01](https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/pc-view-02.png) 
+
+**移动端视图**
+<div align = center>
+<img src="https://github.com/stone-yang/vue-koa-fullstack-demo/raw/master/preview/mobile-view.png" width="50%">
+</div>

@@ -32,11 +32,12 @@ export default {
         }
         if (Array.isArray(value)) {
           value.forEach((action) => {
-            if (action.handler || typeof action.handler !== 'function') {
+            if (!action.handler || typeof action.handler !== 'function') {
               return false;
             }
           });
         }
+        return true;
       },
     },
     title: String,

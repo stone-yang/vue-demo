@@ -37,6 +37,12 @@ mongo: {
 },
 ...
 ```
+**初始化数据 Initiate Database**
+
+``` bash
+# init data within mongodb
+npm run db-init
+``` 
 **运行开发环境 Run Development Environment**
 
 ``` bash
